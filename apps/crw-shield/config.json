@@ -32,7 +32,7 @@
       "hint": "SearXNG instance used by the /v2/search endpoint. Leave blank to disable search (returns empty results with a warning).",
       "required": false,
       "env_variable": "SEARXNG_URL",
-      "default": "http://192.168.1.101:8127",
+      "default": "",
       "regex": "^https?://[\\w\\-\\.]+(:\\d+)?$",
       "pattern_error": "Must be a valid http(s) URL with optional port"
     },
@@ -51,7 +51,7 @@
       "hint": "FlareSolverr endpoint used to escalate Cloudflare IUAM, PerimeterX, Kasada and DataDome challenges. Leave blank to disable FS (L0–L3 only).",
       "required": false,
       "env_variable": "FLARESOLVERR_URL",
-      "default": "http://192.168.1.101:8666",
+      "default": "",
       "regex": "^https?://[\\w\\-\\.]+(:\\d+)?$",
       "pattern_error": "Must be a valid http(s) URL with optional port"
     },

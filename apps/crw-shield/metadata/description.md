@@ -35,7 +35,7 @@ The app asks for the following install-time values:
 | Field | Purpose |
 |-------|---------|
 | **Auth token** | Bearer token for `/v2/scrape` and `/v2/crawl` |
-| **FlareSolverr URL** | FlareSolverr endpoint (e.g. `http://192.168.1.101:8666`) |
+| **FlareSolverr URL** | FlareSolverr endpoint (e.g. `http://flaresolverr:8191`) |
 | **FlareSolverr allowlist** | Comma-separated hosts (supports `*.example.com`) |
 | **Enable TLS proxy** | Spawns a Go sidecar for byte-perfect TLS handshakes |
 | **Rate limit min / jitter** | Per-host throttle, in ms |
