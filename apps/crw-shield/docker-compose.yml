@@ -1,0 +1,48 @@
+services:
+  crw-shield:
+    image: ghcr.io/mathi5/crw-shield:0.1.0
+    restart: unless-stopped
+    environment:
+      - RUST_LOG=info
+      - HOST=0.0.0.0
+      - PORT=3002
+      - TZ=${TZ}
+      # Auth bearer (optional but recommended)
+      - AUTH_TOKEN=${AUTH_TOKEN}
+      # FlareSolverr opt-in per-host allowlist (Pitfall 17: forcing FS globally
+      # regresses cloudflare.com 8385→502). Leave FLARESOLVERR_URL or
+      # FLARESOLVERR_HOSTS blank to disable FS entirely.
+      - FLARESOLVERR_URL=${FLARESOLVERR_URL}
+      - FLARESOLVERR_HOSTS=${FLARESOLVERR_HOSTS}
+      # TLS-impersonation-proxy (Phase 1, opt-in)
+      - TLS_PROXY_ENABLED=${TLS_PROXY_ENABLED}
+      - TLS_PROXY_LISTEN=127.0.0.1:7890
+      - TLS_PROXY_PROFILE=chrome_120
+      - TLS_PROXY_PROFILES=chrome_120,chrome_117,chrome_107,firefox_117,safari_16_0
+      - TLS_PROXY_ROTATION_DELAY_SECS=3
+      - TLS_PROXY_CA_DIR=/var/lib/crw-shield/tls-ca
+      - TLS_PROXY_BYPASS=localhost,127.0.0.1,::1
+      - TLS_PROXY_TIMEOUT_SECS=60
+      # Browser profile warming (disabled — see crates/fetch/src/cdp.rs for
+      # the chromiumoxide Browser lifecycle issue).
+      - CRW_WARMUP_ENABLED=false
+      # Rate limiter (matches cortex-bridge defaults: 2000ms min + 500ms jitter)
+      - RATE_LIMIT_MIN_MS=${RATE_LIMIT_MIN_MS}
+      - RATE_LIMIT_JITTER_MS=${RATE_LIMIT_JITTER_MS}
+    volumes:
+      - crw-shield-tls-ca:/var/lib/crw-shield/tls-ca
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    x-runtipi:
+      is_main: true
+      internal_port: 3002
+
+volumes:
+  crw-shield-tls-ca: {}
+
+x-runtipi:
+  schema_version: 2

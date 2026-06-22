@@ -1,0 +1,77 @@
+{
+  "name": "crw-shield",
+  "id": "crw-shield",
+  "available": true,
+  "port": 3002,
+  "categories": ["utilities", "network", "development"],
+  "short_desc": "Firecrawl v2-compatible scraper with anti-bot bypass (TLS fingerprint + behavior timing).",
+  "description": "crw-shield is a Rust HTTP scraper implementing the Firecrawl v2 API surface (/v2/scrape, /v2/crawl) with multi-layer anti-bot bypass: TLS ClientHello fingerprinting via wreq/BoringSSL, behaviour-aware timing jitter, L0–L3 profile rotation, opt-in FlareSolverr escalation, and a HITL fallback endpoint for human-in-the-loop challenge solving. Exposes a single binary on port 3002 with optional Docker Chromium for JS-heavy sites.",
+  "tipi_version": 3,
+  "version": "0.1.0",
+  "source": "https://github.com/Mathi5/crw-shield",
+  "website": "https://github.com/Mathi5/crw-shield",
+  "exposable": true,
+  "https": false,
+  "dynamic_config": true,
+  "supported_architectures": ["amd64"],
+  "min_tipi_version": "4.0.0",
+  "form_fields": [
+    {
+      "type": "password",
+      "label": "Auth token (bearer)",
+      "hint": "Required bearer token for /v2/scrape and /v2/crawl. Leave blank to disable auth (NOT recommended in production).",
+      "required": false,
+      "env_variable": "AUTH_TOKEN",
+      "min": 16,
+      "max": 128
+    },
+    {
+      "type": "text",
+      "label": "FlareSolverr URL",
+      "hint": "FlareSolverr endpoint used to escalate Cloudflare IUAM, PerimeterX, Kasada and DataDome challenges. Leave blank to disable FS (L0–L3 only).",
+      "required": false,
+      "env_variable": "FLARESOLVERR_URL",
+      "default": "http://192.168.1.101:8666",
+      "regex": "^https?://[\\w\\-\\.]+(:\\d+)?$",
+      "pattern_error": "Must be a valid http(s) URL with optional port"
+    },
+    {
+      "type": "text",
+      "label": "FlareSolverr allowlist (comma-separated hosts)",
+      "hint": "Hosts to escalate to FlareSolverr. Supports *.example.com wildcards. Apex entries also match subdomains. Leave blank to disable FS.",
+      "required": false,
+      "env_variable": "FLARESOLVERR_HOSTS",
+      "default": "nowsecure.nl,perimeterx.com,kasada.io,datadome.co,leboncoin.fr,etsy.com,stackoverflow.com"
+    },
+    {
+      "type": "boolean",
+      "label": "Enable TLS-impersonation proxy (Phase 1)",
+      "hint": "Spawns a Go sidecar (bogdanfinn/tls-client) routing Chrome's HTTPS through byte-perfect browser TLS ClientHellos. Off by default.",
+      "required": false,
+      "env_variable": "TLS_PROXY_ENABLED",
+      "default": false
+    },
+    {
+      "type": "number",
+      "label": "Rate limit min interval (ms)",
+      "hint": "Minimum delay between consecutive scrapes (per host). 0 disables rate limiting. Match cortex-bridge defaults (2000ms) in production.",
+      "required": false,
+      "env_variable": "RATE_LIMIT_MIN_MS",
+      "default": 0,
+      "min": 0,
+      "max": 60000
+    },
+    {
+      "type": "number",
+      "label": "Rate limit jitter (ms)",
+      "hint": "Random jitter added to the min interval. 0 disables jitter. Recommended ≤ 500ms to avoid 20-30s extra wait on 9-site panels.",
+      "required": false,
+      "env_variable": "RATE_LIMIT_JITTER_MS",
+      "default": 0,
+      "min": 0,
+      "max": 5000
+    }
+  ],
+  "created_at": 1750602000000,
+  "updated_at": 1750602000000
+}
