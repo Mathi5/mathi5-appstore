@@ -4,7 +4,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
 | App | Version | Description |
 |-----|--------:|-------------|
-| [crw-shield](./apps/crw-shield) | 0.1.0 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
+| [crw-shield](./apps/crw-shield) | 0.2.0 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
 
 ## Adding this store to Runtipi
 
@@ -15,7 +15,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 5. Click **Update App Stores** to pull the latest app list.
 6. Install `crw-shield` from the app store.
 
-The crw-shield image is `ghcr.io/mathi5/crw-shield:0.1.0` (linux/amd64 only for now).
+The crw-shield image is `ghcr.io/mathi5/crw-shield:0.2.0` (linux/amd64 only for now).
 
 ## Adding a new app
 
