@@ -2,6 +2,7 @@
   "name": "crw-shield",
   "id": "crw-shield",
   "available": true,
+  "author": "Mathi5",
   "port": 3002,
   "categories": ["utilities", "network", "development"],
   "short_desc": "Firecrawl v2-compatible scraper with anti-bot bypass (TLS fingerprint + behavior timing).",

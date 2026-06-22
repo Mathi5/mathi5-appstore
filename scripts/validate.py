@@ -52,9 +52,14 @@ def check_app(app_dir: Path) -> list[str]:
             f"[{folder_id}] config.json `id` ({cfg_id!r}) does not match folder name"
         )
 
-    for required in ("name", "available", "port", "categories", "version"):
+    for required in (
+        "name", "available", "author", "port", "categories", "version",
+    ):
         if required not in config:
             errors.append(f"[{folder_id}] config.json missing required field: {required}")
+
+    if not isinstance(config.get("author"), str):
+        errors.append(f"[{folder_id}] config.json `author` must be a non-empty string")
 
     compose_path = app_dir / "docker-compose.yml"
     compose_alt = app_dir / "docker-compose.json"
