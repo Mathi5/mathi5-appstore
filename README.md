@@ -1,4 +1,4 @@
-# runtipi-appstore
+# mathi5-appstore
 
 Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
@@ -10,7 +10,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
 1. Open your Runtipi dashboard.
 2. Go to **Settings → App Stores → Add App Store**.
-3. Paste this URL: `https://github.com/Mathi5/runtipi-appstore`
+3. Paste this URL: `https://github.com/Mathi5/mathi5-appstore`
 4. Name it (e.g. `mathi5`) and save.
 5. Click **Update App Stores** to pull the latest app list.
 6. Install `crw-shield` from the app store.
