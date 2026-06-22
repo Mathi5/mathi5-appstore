@@ -9,6 +9,10 @@ services:
       - TZ=${TZ}
       # Auth bearer (optional but recommended)
       - AUTH_TOKEN=${AUTH_TOKEN}
+      # SearXNG (optional — /v2/search endpoint; empty URL returns empty
+      # results with a warning, not an error)
+      - SEARXNG_URL=${SEARXNG_URL}
+      - SEARXNG_TOKEN=${SEARXNG_TOKEN}
       # FlareSolverr opt-in per-host allowlist (Pitfall 17: forcing FS globally
       # regresses cloudflare.com 8385→502). Leave FLARESOLVERR_URL or
       # FLARESOLVERR_HOSTS blank to disable FS entirely.

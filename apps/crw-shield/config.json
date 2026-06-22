@@ -27,6 +27,25 @@
     },
     {
       "type": "text",
+      "label": "SearXNG URL",
+      "hint": "SearXNG instance used by the /v2/search endpoint. Leave blank to disable search (returns empty results with a warning).",
+      "required": false,
+      "env_variable": "SEARXNG_URL",
+      "default": "http://192.168.1.101:8127",
+      "regex": "^https?://[\\w\\-\\.]+(:\\d+)?$",
+      "pattern_error": "Must be a valid http(s) URL with optional port"
+    },
+    {
+      "type": "password",
+      "label": "SearXNG token (optional)",
+      "hint": "Bearer token if your SearXNG instance has --server.request-method restrictions. Leave blank if SearXNG is publicly accessible on the network.",
+      "required": false,
+      "env_variable": "SEARXNG_TOKEN",
+      "min": 0,
+      "max": 256
+    },
+    {
+      "type": "text",
       "label": "FlareSolverr URL",
       "hint": "FlareSolverr endpoint used to escalate Cloudflare IUAM, PerimeterX, Kasada and DataDome challenges. Leave blank to disable FS (L0–L3 only).",
       "required": false,
