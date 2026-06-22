@@ -3,8 +3,29 @@
 **Firecrawl v2-compatible scraper with multi-layer anti-bot bypass.**
 
 A Rust HTTP scraper that exposes a Firecrawl v2 API surface (`/v2/scrape`, `/v2/crawl`)
-and ships with an anti-bot stack tuned for Akamai, Cloudflare, DataDome, Kasada and
-PerimeterX-protected sites.
+and ships with an anti-bot stack tuned for Akamai, Cloudflare, DataDome, Kasada,
+PerimeterX and Fastly Edge-protected sites.
+
+## What's new in 0.2.1
+
+- **Fastly Compute@Edge detection** (LeMonde.fr and other sites migrated in
+  2026). The new `providers.fastly_edge_challenge` entry in `providers.toml`
+  recognizes the `/_fs-ch-{HASH}/` asset path, the `<title>Client Challenge</title>`
+  page, the `loading-error` div, and the "A required part of this site couldn't
+  load" message. Previously these returned as `CleanSuccess` with the empty
+  challenge page as the markdown — now the ladder correctly escalates to CDP.
+  Tokens: `client challenge`, `/_fs-ch-`, `loading-error`, `a required part of
+  this site couldn`, `please check your connection, disable any ad blockers`,
+  `javascript is disabled in your browser`, `fastly edge`, `fastly compute`.
+- **Log noise silenced** — chromiumoxide's `WS Invalid message: data did not
+  match any variant of untagged enum Message` warnings (cosmetic, fired on
+  every CDP fetch because chromiumoxide doesn't deserialize some standard
+  Chrome DevTools Protocol events) are now muted by default via
+  `EnvFilter::new("info,chromiumoxide=off,chromiumoxide_cdp=off")` in
+  `crates/server/src/main.rs`. Override with `RUST_LOG=info,chromiumoxide=warn`
+  to see them again.
+- **No breaking changes** — same `/v2/scrape`, `/v2/crawl`, `/hitl/result` API
+  and form-field schema. Existing Runtipi installs can update in place.
 
 ## What's new in 0.2.0
 
@@ -86,5 +107,5 @@ POST /hitl/result             — submit human-solved challenge
 ## Links
 
 - [GitHub](https://github.com/Mathi5/crw-shield)
-- [v0.2.0 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.2.0)
+- [v0.2.1 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.2.1)
 - [cortex-bridge](https://forgejo.cyrleb.dev/CyrilLeblanc/cortex-bridge) — upstream inspiration (MIT)
