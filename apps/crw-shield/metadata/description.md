@@ -6,6 +6,32 @@ A Rust HTTP scraper that exposes a Firecrawl v2 API surface (`/v2/scrape`, `/v2/
 and ships with an anti-bot stack tuned for Akamai, Cloudflare, DataDome, Kasada,
 PerimeterX and Fastly Edge-protected sites.
 
+## What's new in 0.4.0
+
+- **Self-service HITL solve UI** — when the ladder exhausts and an auto-enqueued HITL
+  challenge is created, the server now exposes a minimal HTML form at
+  `GET /v2/scrape/hitl/{id}/solve-ui`. Open it in a normal browser, paste the cookies
+  you copied from Chrome DevTools (or a JSON array), hit Solve. No SSH, no `curl`,
+  no JSON-templating required. The form accepts both `document.cookie`-style output
+  (`name=value; name2=value2`) and a raw JSON array of cookie objects.
+- **Discord webhook now embeds a clickable solve link** — same `DISCORD_WEBHOOK_HITL_URL`
+  env var, but the message now contains a "Solve in browser" link that points at the
+  solve UI. Operators on any device that can reach the server can paste cookies
+  without ever SSH-ing in.
+- **`CRW_PUBLIC_URL` env var** — controls the host used in operator-facing links. The
+  default `0.0.0.0:3002` isn't routable from Discord clicks, so set this to the URL
+  you actually use in your browser (e.g. `http://192.168.1.42:3002` or
+  `https://crw.example.com`). Falls back to `HOST:PORT` when unset.
+- **Cookie jar writable-path fallback** — on unprivileged installs (e.g. local dev
+  without `/var/lib` root), the cookie persistence now falls back to
+  `$XDG_DATA_HOME/crw-shield/cookies.json` instead of failing with a silent
+  `Permission denied` every 60s.
+- **Test hardening** — HITL integration tests are now serialized with a
+  `tokio::sync::Mutex` to fix intermittent 404s under parallel cargo test runners.
+- **No breaking changes** — `/v2/scrape`, `/v2/crawl`, `/v2/scrape/hitl/{id}/solve`,
+  and the existing form-field schema are unchanged. Existing v0.3 installs can update
+  in place.
+
 ## What's new in 0.3.0
 
 - **Cookie jar disk persistence** — solved-challenge cookies (`cf_clearance`,
@@ -100,6 +126,8 @@ The app asks for the following install-time values:
 | **FlareSolverr URL** | FlareSolverr endpoint (e.g. `http://flaresolverr:8191`) |
 | **FlareSolverr allowlist** | Comma-separated hosts (supports `*.example.com`) |
 | **Enable TLS proxy** | Spawns a Go sidecar for byte-perfect TLS handshakes |
+| **Public URL** | Operator-facing URL used in Discord solve links (e.g. `http://192.168.1.42:3002`) |
+| **Discord webhook URL** | Channel webhook that receives HITL notifications |
 | **Rate limit min / jitter** | Per-host throttle, in ms |
 
 Advanced configuration (SearXNG, behavioural simulation, STEALTH_ENABLED,
@@ -121,11 +149,13 @@ GET  /health                  — health check
 POST /v2/scrape               — single-URL scrape (Firecrawl v2 schema)
 POST /v2/crawl                — multi-URL crawl (async, returns job id)
 GET  /v2/crawl/:id            — poll crawl job
-POST /hitl/result             — submit human-solved challenge
+POST /v2/scrape/hitl/:id/solve — submit human-solved challenge (JSON)
+GET  /v2/scrape/hitl/:id/solve-ui — render the cookie-paste HTML form
+POST /v2/scrape/hitl/:id/solve-ui — submit cookies via the form
 ```
 
 ## Links
 
 - [GitHub](https://github.com/Mathi5/crw-shield)
-- [v0.2.1 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.2.1)
+- [v0.4.0 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.4.0)
 - [cortex-bridge](https://forgejo.cyrleb.dev/CyrilLeblanc/cortex-bridge) — upstream inspiration (MIT)

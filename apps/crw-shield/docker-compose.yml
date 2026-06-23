@@ -1,12 +1,18 @@
 services:
   crw-shield:
-    image: ghcr.io/mathi5/crw-shield:0.3.0
+    image: ghcr.io/mathi5/crw-shield:0.4.0
     restart: unless-stopped
     environment:
       - RUST_LOG=info
       - HOST=0.0.0.0
       - PORT=3002
       - TZ=${TZ}
+      # Public URL for operator-facing links (Discord "solve in browser"
+      # button). When unset, the server falls back to HOST:PORT — fine for
+      # localhost access, broken for Discord clicks from outside the LAN.
+      # Set to the same value users type in their browser to reach the
+      # server, e.g. http://192.168.1.42:3002 or https://crw.example.com
+      - CRW_PUBLIC_URL=${CRW_PUBLIC_URL}
       # Auth bearer (optional but recommended)
       - AUTH_TOKEN=${AUTH_TOKEN}
       # SearXNG (optional — /v2/search endpoint; empty URL returns empty
