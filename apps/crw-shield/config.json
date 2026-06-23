@@ -94,7 +94,7 @@
     {
       "type": "text",
       "label": "Cookie persistence path",
-      "hint": "Where the shared CookieJar is saved to (and loaded from at startup). Leave blank to disable persistence (cookies reset on every restart). Default: /var/lib/crw-shield/cookies.json.",
+      "hint": "Where the shared CookieJar is saved to (and loaded from at startup). Leave blank to disable persistence (cookies reset on every restart). Default: /var/lib/crw-shield/cookies.json. The parent directory must exist and be writable — the bind-mount in docker-compose.yml uses /var/lib/crw-shield/cookies.d so the file is created inside the volume.",
       "required": false,
       "env_variable": "COOKIE_PERSISTENCE_PATH",
       "default": "/var/lib/crw-shield/cookies.json"

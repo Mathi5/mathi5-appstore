@@ -50,10 +50,18 @@ services:
       - DISCORD_WEBHOOK_HITL_URL=${DISCORD_WEBHOOK_HITL_URL}
     volumes:
       - crw-shield-tls-ca:/var/lib/crw-shield/tls-ca
-      # Persistent cookie jar (survives container restarts). Bound to
-      # /var/lib/crw-shield/cookies.json by default — same path as
-      # COOKIE_PERSISTENCE_PATH above.
-      - crw-shield-cookies:/var/lib/crw-shield/cookies.json
+      # Persistent cookie jar (survives container restarts).
+      # IMPORTANT: bind-mount the *directory*, not a file path — Docker
+      # cannot create a file inside a named volume, only a directory,
+      # which would break the binaire's atomic rename (.tmp -> cookies.json)
+      # with EISDIR. The server writes /var/lib/crw-shield/cookies.json
+      # inside this directory.
+      # Note: on upgrade from v0.4.0, the old crw-shield-cookies volume
+      # contains a leftover cookies.json/ directory. Re-create the volume
+      # (Settings → App data → Reset) or rename the volume before upgrading
+      # — otherwise you'll see two side-by-side folders (cookies.d and
+      # cookies.json), harmless but confusing.
+      - crw-shield-cookies:/var/lib/crw-shield/cookies.d
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/health"]
       interval: 30s
