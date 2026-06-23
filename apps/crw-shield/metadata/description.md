@@ -6,6 +6,26 @@ A Rust HTTP scraper that exposes a Firecrawl v2 API surface (`/v2/scrape`, `/v2/
 and ships with an anti-bot stack tuned for Akamai, Cloudflare, DataDome, Kasada,
 PerimeterX and Fastly Edge-protected sites.
 
+## What's new in 0.3.0
+
+- **Cookie jar disk persistence** — solved-challenge cookies (`cf_clearance`,
+  `__cf_bm`, `dd`, vendor-specific session tokens) now survive container
+  restarts. New `CookieJar::save_to_path()` / `load_from_path()` with atomic
+  writes (`.tmp` + rename) and on-load expiry filtering. The server seeds the
+  shared jar from `/var/lib/crw-shield/cookies.json` at startup and
+  snapshots it back every 60 seconds. Override the path via
+  `COOKIE_PERSISTENCE_PATH`; empty value = in-memory only.
+- **HITL solve endpoint** — `POST /v2/scrape/hitl/:id/solve` accepts
+  `{cookies: [{name, value, domain, max_age_secs}]}`, injects them into the
+  shared jar, marks the queue entry `solved`, and snapshots to disk
+  immediately. Closes the loop on the existing `hitl_enqueue` /
+  `hitl_result` pair — previously there was no way to mark an entry solved.
+- **Discord webhook notification on HITL** — set `DISCORD_WEBHOOK_HITL_URL`
+  to a webhook URL and every auto-enqueued HITL pings the channel with the
+  challenge kind, URL, id, and a ready-to-paste `curl` solve command.
+  Fire-and-forget (`tokio::spawn`, 5s timeout) so a Discord outage never
+  blocks scrapes.
+
 ## What's new in 0.2.1
 
 - **Fastly Compute@Edge detection** (LeMonde.fr and other sites migrated in

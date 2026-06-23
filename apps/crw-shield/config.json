@@ -8,7 +8,7 @@
   "short_desc": "Firecrawl v2-compatible scraper with anti-bot bypass (TLS fingerprint + behavior timing).",
   "description": "crw-shield is a Rust HTTP scraper implementing the Firecrawl v2 API surface (/v2/scrape, /v2/crawl) with multi-layer anti-bot bypass: TLS ClientHello fingerprinting via wreq/BoringSSL, behaviour-aware timing jitter, L0–L3 profile rotation, opt-in FlareSolverr escalation, and a HITL fallback endpoint for human-in-the-loop challenge solving. Exposes a single binary on port 3002 with optional Docker Chromium for JS-heavy sites.",
   "tipi_version": 3,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "source": "https://github.com/Mathi5/crw-shield",
   "website": "https://github.com/Mathi5/crw-shield",
   "exposable": true,
@@ -90,6 +90,24 @@
       "default": 0,
       "min": 0,
       "max": 5000
+    },
+    {
+      "type": "text",
+      "label": "Cookie persistence path",
+      "hint": "Where the shared CookieJar is saved to (and loaded from at startup). Leave blank to disable persistence (cookies reset on every restart). Default: /var/lib/crw-shield/cookies.json.",
+      "required": false,
+      "env_variable": "COOKIE_PERSISTENCE_PATH",
+      "default": "/var/lib/crw-shield/cookies.json"
+    },
+    {
+      "type": "text",
+      "label": "Discord webhook for HITL notifications",
+      "hint": "When set, every auto-enqueued HITL challenge pings this Discord webhook URL with the challenge details + a ready-to-paste solve curl. Leave blank to disable notifications.",
+      "required": false,
+      "env_variable": "DISCORD_WEBHOOK_HITL_URL",
+      "default": "",
+      "regex": "^https://discord\\.com/api/webhooks/[0-9]+/[\\w-]+$|^$",
+      "pattern_error": "Must be a Discord webhook URL (https://discord.com/api/webhooks/...) or empty"
     }
   ],
   "created_at": 1750602000000,
