@@ -152,6 +152,7 @@ GET  /v2/crawl/:id            — poll crawl job
 POST /v2/scrape/hitl/:id/solve — submit human-solved challenge (JSON)
 GET  /v2/scrape/hitl/:id/solve-ui — render the cookie-paste HTML form
 POST /v2/scrape/hitl/:id/solve-ui — submit cookies via the form
+GET  /v2/scrape/hitl/result?id=<uuid> — poll HITL queue status (returns challenge kind/url/id + status pending|solved)
 ```
 
 ## Links
