@@ -1,6 +1,6 @@
 services:
   crw-shield:
-    image: ghcr.io/mathi5/crw-shield:0.4.0
+    image: ghcr.io/mathi5/crw-shield:0.4.1
     restart: unless-stopped
     environment:
       - RUST_LOG=info

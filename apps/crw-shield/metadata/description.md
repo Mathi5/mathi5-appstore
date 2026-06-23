@@ -6,6 +6,24 @@ A Rust HTTP scraper that exposes a Firecrawl v2 API surface (`/v2/scrape`, `/v2/
 and ships with an anti-bot stack tuned for Akamai, Cloudflare, DataDome, Kasada,
 PerimeterX and Fastly Edge-protected sites.
 
+## What's new in 0.4.1
+
+- **Logs silenced unconditionally** — the cosmetic
+  `WS Invalid message: data did not match any variant of untagged enum Message`
+  warning from `chromiumoxide_cdp` (Chrome 120+ sends CDP events the parser
+  doesn't recognise) was silenced in v0.2.1 via the default `EnvFilter`,
+  but `RUST_LOG=info` in docker-compose overrode the default and re-enabled
+  the noise. v0.4.1 builds the filter in two steps: honour the user's
+  `RUST_LOG` for everything, then force `chromiumoxide=off` and
+  `chromiumoxide_cdp=off` on top — the silence is now non-overridable.
+- **`skipJs` field now wired** — v0.4.0 silently ignored the Firecrawl v2
+  `skipJs` field, so SPA scrapes (YouTube `/watch`, modern client-side
+  routes) returned `success=true` with markdown containing only the JS
+  bootstrap shell. v0.4.1 adds a `skipJs: bool` field (default `true`, opt
+  in to JS rendering via `skipJs: false`) and escalates to headless
+  Chromium whenever the caller opts in. Callers wanting YouTube or other
+  SPAs to render properly must pass `"skipJs": false`.
+
 ## What's new in 0.4.0
 
 - **Self-service HITL solve UI** — when the ladder exhausts and an auto-enqueued HITL
@@ -158,5 +176,5 @@ GET  /v2/scrape/hitl/result?id=<uuid> — poll HITL queue status (returns challe
 ## Links
 
 - [GitHub](https://github.com/Mathi5/crw-shield)
-- [v0.4.0 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.4.0)
+- [v0.4.1 release](https://github.com/Mathi5/crw-shield/releases/tag/v0.4.1)
 - [cortex-bridge](https://forgejo.cyrleb.dev/CyrilLeblanc/cortex-bridge) — upstream inspiration (MIT)
