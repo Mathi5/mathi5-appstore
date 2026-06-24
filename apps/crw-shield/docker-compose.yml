@@ -1,6 +1,6 @@
 services:
   crw-shield:
-    image: ghcr.io/mathi5/crw-shield:0.4.1
+    image: ghcr.io/mathi5/crw-shield:0.4.4
     restart: unless-stopped
     environment:
       - RUST_LOG=info
@@ -14,11 +14,11 @@ services:
       # server, e.g. http://192.168.1.42:3002 or https://crw.example.com
       - CRW_PUBLIC_URL=${CRW_PUBLIC_URL}
       # Auth bearer (optional but recommended)
-      - AUTH_TOKEN=${AUTH_TOKEN}
+      - AUTH_TOKEN=***
       # SearXNG (optional — /v2/search endpoint; empty URL returns empty
       # results with a warning, not an error)
       - SEARXNG_URL=${SEARXNG_URL}
-      - SEARXNG_TOKEN=${SEARXNG_TOKEN}
+      - SEARXNG_TOKEN=***
       # FlareSolverr opt-in per-host allowlist (Pitfall 17: forcing FS globally
       # regresses cloudflare.com 8385→502). Leave FLARESOLVERR_URL or
       # FLARESOLVERR_HOSTS blank to disable FS entirely.
@@ -48,6 +48,12 @@ services:
       # challenge is auto-enqueued (challenge kind + URL + id + ready-to-
       # paste solve curl). Empty = no notifications.
       - DISCORD_WEBHOOK_HITL_URL=${DISCORD_WEBHOOK_HITL_URL}
+      # NEW in v0.4.4: reuse an external Chrome instance over CDP instead
+      # of bundling Chromium. Set to ws://chrome-mcp-host:9223 (or
+      # http://chrome-mcp-host:9223 — the WS URL is auto-resolved via
+      # GET /json/version). Leave blank for default behaviour
+      # (chromiumoxide spawns its own Chromium).
+      - CRW_CDP_REMOTE_URL=${CRW_CDP_REMOTE_URL}
     volumes:
       - crw-shield-tls-ca:/var/lib/crw-shield/tls-ca
       # Persistent cookie jar (survives container restarts).
