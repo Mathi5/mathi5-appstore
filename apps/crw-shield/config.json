@@ -8,7 +8,7 @@
   "short_desc": "Firecrawl v2-compatible scraper with anti-bot bypass + HITL self-service solve UI.",
   "description": "crw-shield is a Rust HTTP scraper implementing the Firecrawl v2 API surface (/v2/scrape, /v2/crawl) with multi-layer anti-bot bypass: TLS ClientHello fingerprinting via wreq/BoringSSL, behaviour-aware timing jitter, L0–L3 profile rotation, opt-in FlareSolverr escalation, and a HITL fallback endpoint for human-in-the-loop challenge solving. v0.4 adds a self-service solve UI (GET/POST /v2/scrape/hitl/{id}/solve-ui) and Discord webhook notifications with a clickable solve link. Exposes a single binary on port 3002 with optional Docker Chromium for JS-heavy sites.",
   "tipi_version": 3,
-  "version": "0.4.4",
+  "version": "0.4.5",
   "source": "https://github.com/Mathi5/crw-shield",
   "website": "https://github.com/Mathi5/crw-shield",
   "exposable": true,
@@ -121,5 +121,5 @@
     }
   ],
   "created_at": 1750602000000,
-  "updated_at": 1782344000000
+  "updated_at": 1782463769112
 }
