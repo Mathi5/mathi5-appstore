@@ -1,0 +1,25 @@
+services:
+  swaparr:
+    image: ghcr.io/thijmengthn/swaparr:0.12.0
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - PLATFORM=sonarr
+      - BASEURL=${BASEURL}
+      - APIKEY=${APIKEY}
+      - MAX_STRIKES=${MAX_STRIKES}
+      - SCAN_INTERVAL=${SCAN_INTERVAL}
+      - MAX_DOWNLOAD_TIME=${MAX_DOWNLOAD_TIME}
+      - IGNORE_ABOVE_SIZE=${IGNORE_ABOVE_SIZE}
+      - REMOVE_FROM_CLIENT=${REMOVE_FROM_CLIENT}
+      - STRIKE_QUEUED=${STRIKE_QUEUED}
+      - DRY_RUN=${DRY_RUN}
+    # No volume: Swaparr is stateless (activity is log-only, health state
+    # lives in /tmp inside the container). Needs no ports and no UI.
+    x-runtipi:
+      # Not the main service (headless, nothing to expose) — but it must
+      # REACH the *arr apps, which live on tipi_main_network.
+      add_to_main_network: true
+
+x-runtipi:
+  schema_version: 2

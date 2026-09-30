@@ -6,6 +6,8 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 |-----|--------:|-------------|
 | [crw-shield](./apps/crw-shield) | 0.4.5 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
 | [neutarr](./apps/neutarr) | 1.11.1 | Missing-media hunter & quality upgrades for the *arr stack (Huntarr successor) |
+| [swaparr-sonarr](./apps/swaparr-sonarr) | 0.12.0 | Stalled-download cleanup for Sonarr (headless, per-instance watcher) |
+| [swaparr-radarr](./apps/swaparr-radarr) | 0.12.0 | Stalled-download cleanup for Radarr (headless, per-instance watcher) |
 
 ## Adding this store to Runtipi
 

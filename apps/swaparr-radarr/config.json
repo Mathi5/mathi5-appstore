@@ -1,0 +1,97 @@
+{
+  "name": "Swaparr (Radarr)",
+  "id": "swaparr-radarr",
+  "available": true,
+  "author": "ThijmenGThN",
+  "port": 8080,
+  "categories": ["media", "automation", "utilities"],
+  "short_desc": "Stalled-download cleanup for Radarr: strike system, auto-remove slow/failed grabs. No web UI (headless, logs only).",
+  "description": "Swaparr quietly operates in the background against your Radarr instance: it scans active downloads every SCAN_INTERVAL, flags slow or stalled ones with a strike system, and automatically removes them (optionally from the download client too) after MAX_STRIKES. This app targets one Radarr instance only — install it next to swaparr-sonarr (same store) to cover both, one watcher per app, as upstream recommends. Headless by design: no web UI, configuration via the install form, activity in the app logs (docker logs / Runtipi log view). Supports DRY_RUN sandbox mode.",
+  "tipi_version": 1,
+  "version": "0.12.0",
+  "source": "https://github.com/ThijmenGThN/swaparr",
+  "website": "https://github.com/ThijmenGThN/swaparr",
+  "exposable": false,
+  "dynamic_config": true,
+  "supported_architectures": ["amd64", "arm64"],
+  "min_tipi_version": "4.0.0",
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "Radarr URL",
+      "hint": "URL of your Radarr instance as reachable from this container. Prefer the container name + INTERNAL port (e.g. http://radarr:7878); a LAN IP + host port (e.g. http://192.168.1.10:8099) works too.",
+      "placeholder": "http://radarr:7878",
+      "required": true,
+      "env_variable": "BASEURL"
+    },
+    {
+      "type": "password",
+      "label": "Radarr API key",
+      "hint": "API key of your Radarr instance (Settings > General > API Key).",
+      "required": true,
+      "env_variable": "APIKEY",
+      "min": 16,
+      "max": 128
+    },
+    {
+      "type": "number",
+      "label": "Max strikes",
+      "hint": "Strikes a download must accumulate before removal (1-2 aggressive, 3-4 balanced, 5+ conservative).",
+      "required": false,
+      "env_variable": "MAX_STRIKES",
+      "default": 3,
+      "min": 1,
+      "max": 99
+    },
+    {
+      "type": "text",
+      "label": "Scan interval",
+      "hint": "Time between monitoring cycles (e.g. 10m, 30m, 1h, 2h).",
+      "required": false,
+      "env_variable": "SCAN_INTERVAL",
+      "default": "10m"
+    },
+    {
+      "type": "text",
+      "label": "Max download time",
+      "hint": "Maximum time before a download is considered stalled (e.g. 2h, 120m, 4h).",
+      "required": false,
+      "env_variable": "MAX_DOWNLOAD_TIME",
+      "default": "2h"
+    },
+    {
+      "type": "text",
+      "label": "Ignore above size",
+      "hint": "Ignore downloads larger than this size (e.g. 25GB, 10GB, 5000MB) — large files naturally take longer.",
+      "required": false,
+      "env_variable": "IGNORE_ABOVE_SIZE",
+      "default": "25GB"
+    },
+    {
+      "type": "boolean",
+      "label": "Remove from download client",
+      "hint": "Also remove the download from the download client (recommended), not only from Radarr's queue.",
+      "required": false,
+      "env_variable": "REMOVE_FROM_CLIENT",
+      "default": true
+    },
+    {
+      "type": "boolean",
+      "label": "Strike queued downloads",
+      "hint": "When enabled, queued (not yet started) downloads are eligible for strikes instead of being bypassed.",
+      "required": false,
+      "env_variable": "STRIKE_QUEUED",
+      "default": false
+    },
+    {
+      "type": "boolean",
+      "label": "Dry run",
+      "hint": "Sandbox mode: log what would be removed without removing anything. Leave ON for the first cycles to check the logs, then turn off.",
+      "required": false,
+      "env_variable": "DRY_RUN",
+      "default": false
+    }
+  ],
+  "created_at": 1790788818441,
+  "updated_at": 1790788818441
+}

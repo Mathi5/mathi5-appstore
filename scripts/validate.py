@@ -87,10 +87,26 @@ def check_app(app_dir: Path) -> list[str]:
                 name for name, svc in services.items()
                 if (svc or {}).get("x-runtipi", {}).get("is_main")
             ]
-            if not main:
+            # A headless app (no web UI, nothing to expose) may skip is_main
+            # entirely, provided its services join the shared network via
+            # x-runtipi.add_to_main_network so they can reach other apps.
+            headless_ok = any(
+                (svc or {}).get("x-runtipi", {}).get("add_to_main_network")
+                for svc in services.values()
+            )
+            if not main and not headless_ok:
                 errors.append(
-                    f"[{folder_id}] {chosen.name} has no service with `x-runtipi.is_main: true`"
+                    f"[{folder_id}] {chosen.name}: no service with `x-runtipi.is_main: true` "
+                    "and no headless pattern (`add_to_main_network: true` on every service)"
                 )
+            if main and len(main) != len(services):
+                non_main = [n for n in services if n not in main]
+                for n in non_main:
+                    if not (services[n] or {}).get("x-runtipi", {}).get("add_to_main_network"):
+                        errors.append(
+                            f"[{folder_id}] service `{n}` is neither is_main nor "
+                            "add_to_main_network — it will be network-isolated"
+                        )
 
     if not (app_dir / "metadata" / "description.md").is_file():
         errors.append(f"[{folder_id}] missing metadata/description.md")
