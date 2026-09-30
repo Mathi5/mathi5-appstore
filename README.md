@@ -4,7 +4,8 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
 | App | Version | Description |
 |-----|--------:|-------------|
-| [crw-shield](./apps/crw-shield) | 0.2.0 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
+| [crw-shield](./apps/crw-shield) | 0.4.5 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
+| [neutarr](./apps/neutarr) | 1.11.1 | Missing-media hunter & quality upgrades for the *arr stack (Huntarr successor) |
 
 ## Adding this store to Runtipi
 
@@ -46,8 +47,8 @@ GitHub Actions runs the same validator on every push and PR to `main`.
 
 ## Repository conventions
 
-- This is a **private** store. Keep it that way unless the apps here are intended
-  for public consumption.
+- The store is **public** (Runtipi instances fetch it by cloning). Keep app
+  images public on their registry too. No personal data in form-field defaults.
 - Apps in this store are not endorsed by the upstream projects they wrap — they
   are configured for personal use (e.g. specific env var defaults, internal
   service URLs).

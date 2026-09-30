@@ -1,0 +1,28 @@
+services:
+  neutarr:
+    image: iampuid0/neutarr:1.11.1
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+      # Optional: fixed 16+ char first-run setup token. When empty, NeutArr
+      # generates a one-time token printed in the app logs and stored at
+      # /config/.setup-token (deleted after the first account is created).
+      - NEUTARR_SETUP_TOKEN=${NEUTARR_SETUP_TOKEN}
+      # Proxy Auth mode: trust a reverse proxy (e.g. Traefik + forward-auth)
+      # instead of local accounts. Set TRUSTED_PROXIES to the proxy
+      # subnet(s); empty = standard local account authentication.
+      - TRUSTED_PROXIES=${TRUSTED_PROXIES}
+      - NEUTARR_PROXY_AUTH_HEADER=${NEUTARR_PROXY_AUTH_HEADER}
+      # Force Secure session cookies when NeutArr is served exclusively
+      # over HTTPS and proxy scheme detection is unavailable.
+      - NEUTARR_SECURE_COOKIES=${NEUTARR_SECURE_COOKIES}
+    volumes:
+      - ${APP_DATA_DIR}/data:/config
+    x-runtipi:
+      is_main: true
+      internal_port: 9705
+
+x-runtipi:
+  schema_version: 2

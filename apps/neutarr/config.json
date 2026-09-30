@@ -1,0 +1,56 @@
+{
+  "name": "NeutArr",
+  "id": "neutarr",
+  "available": true,
+  "author": "I-am-PUID-0",
+  "port": 9705,
+  "categories": ["media", "automation", "utilities"],
+  "short_desc": "Missing-media hunter & quality upgrades for your *arr stack (Sonarr/Radarr/Lidarr/Readarr/Whisparr). Huntarr successor.",
+  "description": "NeutArr periodically checks your configured apps and triggers searches for missing movies, series, episodes, music, books and items that have not met their configured quality cutoff, plus stalled-download handling via Swaparr. It works alongside your existing stack and uses each app's API to request searches — it does not replace Sonarr, Radarr, your download client or your media server. Supports Sonarr, Radarr, Lidarr, Readarr, Whisparr v2, Whisparr v3 (Eros) and Swaparr, with multiple instances of the same app. Code lineage: Huntarr v6.6.3 (last clean release) continued through ElfHosted's NewtArr fork. First-run: a one-time setup token is printed in the container logs (or set your own via the install form), then create your account and choose an authentication mode.",
+  "tipi_version": 1,
+  "version": "1.11.1",
+  "source": "https://github.com/I-am-PUID-0/NeutArr",
+  "website": "https://github.com/I-am-PUID-0/NeutArr",
+  "exposable": true,
+  "dynamic_config": true,
+  "supported_architectures": ["amd64", "arm64"],
+  "form_fields": [
+    {
+      "type": "password",
+      "label": "First-run setup token (optional)",
+      "hint": "16+ char token requested in the web UI on first start. Leave empty: NeutArr generates a one-time token, printed in the app logs and stored at /config/.setup-token (deleted after account creation).",
+      "required": false,
+      "env_variable": "NEUTARR_SETUP_TOKEN",
+      "min": 16,
+      "max": 128
+    },
+    {
+      "type": "text",
+      "label": "Trusted proxy networks (proxy auth mode)",
+      "hint": "Comma-separated IPv4 CIDR subnets your reverse proxy runs in (e.g. Runtipi's own Traefik subnet). Required only when authenticating via a proxy with user header auth instead of local accounts. Leave empty for standard local account authentication.",
+      "required": false,
+      "env_variable": "TRUSTED_PROXIES",
+      "default": "",
+      "regex": "^[0-9\\.,/ ]+$|^$",
+      "pattern_error": "Must be comma-separated IPv4 CIDR subnets (e.g. 172.20.0.0/16) or empty"
+    },
+    {
+      "type": "text",
+      "label": "Proxy auth header",
+      "hint": "Name of the HTTP header your auth proxy sets with the authenticated username. Only used in proxy auth mode.",
+      "required": false,
+      "env_variable": "NEUTARR_PROXY_AUTH_HEADER",
+      "default": "Remote-User"
+    },
+    {
+      "type": "boolean",
+      "label": "Force secure session cookies",
+      "hint": "Enable only when NeutArr is served exclusively over HTTPS and proxy scheme detection is unavailable.",
+      "required": false,
+      "env_variable": "NEUTARR_SECURE_COOKIES",
+      "default": false
+    }
+  ],
+  "created_at": 1790787257063,
+  "updated_at": 1790787257063
+}
