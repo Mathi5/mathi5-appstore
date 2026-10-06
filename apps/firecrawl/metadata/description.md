@@ -37,8 +37,14 @@ A Bull board admin UI is available at `/admin/<BULL_AUTH_KEY>/queues`.
 | LLM base URL / API key / model | empty | Optional; enables LLM features (extract agent). Point at any OpenAI-compatible endpoint |
 | SearXNG endpoint | empty | Optional; enables `/v2/search`. Use a container-reachable URL, e.g. `http://searxng:8080` |
 | SearXNG categories | `general` | Only used when the endpoint is set |
+| Max CPU / Max RAM ratio | `0.8` | Worker backpressure: workers refuse new jobs when host CPU or RAM usage exceeds the ratio. Raise to `1` if scrapes stay queued on a busy host |
 
 LLM and search features are strictly optional — scraping, crawling and mapping work without them.
+
+> **Note**: on small hosts you may see `Can't accept connection due to RAM/CPU load`
+> in the api logs while the 8 nuq workers start up — that's normal backpressure
+> (default threshold: 80 % CPU or RAM). If it never clears and scrapes stay
+> queued, raise the Max CPU / Max RAM settings above.
 
 ## Upstream images
 

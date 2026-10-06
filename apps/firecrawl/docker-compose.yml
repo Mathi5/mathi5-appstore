@@ -44,6 +44,12 @@ services:
       - OPENAI_BASE_URL=${OPENAI_BASE_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MODEL_NAME=${MODEL_NAME}
+      # Worker backpressure: workers refuse new jobs when host CPU or RAM
+      # exceeds MAX_CPU/MAX_RAM (ratios 0-1, upstream defaults 0.8; read via
+      # z.coerce.number — an EMPTY string coerces to 0, so the :- default
+      # guards both unset and empty values).
+      - MAX_CPU=${MAX_CPU:-0.8}
+      - MAX_RAM=${MAX_RAM:-0.8}
       # Upstream disables the search backend when SEARXNG_ENDPOINT is empty
       # (checked in apps/api/src/search/index.ts). A blank URL field = search
       # off; no ${...} interpolation needed in this value.
