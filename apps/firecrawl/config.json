@@ -57,7 +57,7 @@
       "label": "SearXNG endpoint URL",
       "env_variable": "SEARXNG_ENDPOINT",
       "default": "",
-      "hint": "Optional. URL of a SearXNG instance reachable from this app, e.g. the SearXNG app's host port: http://<runtipi-host>:<port>. Leave empty to use the DuckDuckGo fallback for /v2/search."
+      "hint": "Optional. For a SearXNG installed as a Runtipi app: http://searxng:8080 (container name + INTERNAL port — cross-app resolution works because both mains join tipi_main_network). Leave empty to use the DuckDuckGo fallback for /v2/search."
     },
     {
       "type": "text",
