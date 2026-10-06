@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: ghcr.io/firecrawl/firecrawl:2.11.0
+    image: ghcr.io/firecrawl/firecrawl:2.11.3
     command: node dist/src/harness.js --start-docker
     environment:
       - REDIS_URL=redis://redis:6379

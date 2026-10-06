@@ -8,7 +8,7 @@
   "short_desc": "Web scraping API turning any site into clean LLM-ready markdown.",
   "description": "Self-hosted Firecrawl: scrape, crawl and search any website and get clean markdown ready for LLM consumption. Includes the Playwright microservice for JS-heavy pages. API compatible with the Firecrawl SDKs (v2).",
   "tipi_version": 1,
-  "version": "2.11.0",
+  "version": "2.11.3",
   "source": "https://github.com/firecrawl/firecrawl",
   "exposable": true,
   "dynamic_config": true,
