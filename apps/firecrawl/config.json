@@ -57,7 +57,7 @@
       "label": "SearXNG endpoint URL",
       "env_variable": "SEARXNG_ENDPOINT",
       "default": "",
-      "hint": "Optional. SearXNG URL reachable from this app, e.g. http://searxng:8080 (container name). Leave empty to disable search."
+      "hint": "Optional. URL of a SearXNG instance reachable from this app, e.g. the SearXNG app's host port: http://<runtipi-host>:<port>. Leave empty to use the DuckDuckGo fallback for /v2/search."
     },
     {
       "type": "text",

@@ -36,10 +36,10 @@ A Bull board admin UI is available at `/admin/<BULL_AUTH_KEY>/queues`.
 
 | Field | Default | Notes |
 |-------|---------|-------|
-| API key (`TEST_API_KEY`) | random 24 chars | Bearer token required on v2 endpoints |
+| API key (`TEST_API_KEY`) | random 24 chars | Bearer token sent by SDKs (NOT enforced server-side in self-hosted mode — the key column only documents the client convention) |
 | Bull admin key (`BULL_AUTH_KEY`) | random | Secret path segment for `/admin/<key>/queues` |
 | LLM base URL / API key / model | empty | Optional; enables LLM features (extract agent). Point at any OpenAI-compatible endpoint |
-| SearXNG endpoint | empty | Optional; enables `/v2/search`. Use a container-reachable URL, e.g. `http://searxng:8080` |
+| SearXNG endpoint | empty | Optional; enables `/v2/search` via SearXNG instead of the DuckDuckGo fallback. Use a **host-port** URL reachable from the app, e.g. `http://<runtipi-host>:<searxng-port>` — container names like `http://searxng:8080` do NOT resolve between apps |
 | SearXNG categories | `general` | Only used when the endpoint is set |
 | Max CPU / Max RAM ratio | `0.8` | Worker backpressure: workers refuse new jobs when host CPU or RAM usage exceeds the ratio. Raise to `1` if scrapes stay queued on a busy host |
 
