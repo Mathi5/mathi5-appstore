@@ -1,0 +1,62 @@
+{
+  "name": "Firecrawl",
+  "id": "firecrawl",
+  "available": true,
+  "author": "Mathi5",
+  "port": 3002,
+  "categories": ["development", "network", "utilities"],
+  "short_desc": "Web scraping API turning any site into clean LLM-ready markdown.",
+  "description": "Self-hosted Firecrawl: scrape, crawl and search any website and get clean markdown ready for LLM consumption. Includes the Playwright microservice for JS-heavy pages. API compatible with the Firecrawl SDKs (v2).",
+  "tipi_version": 1,
+  "version": "2.11.0",
+  "source": "https://github.com/firecrawl/firecrawl",
+  "exposable": true,
+  "dynamic_config": true,
+  "supported_architectures": ["amd64", "arm64"],
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "API key to authenticate requests (Bearer token)",
+      "env_variable": "TEST_API_KEY",
+      "random_length": 24
+    },
+    {
+      "type": "password",
+      "label": "Bull board admin key (secret path segment)",
+      "env_variable": "BULL_AUTH_KEY"
+    },
+    {
+      "type": "text",
+      "label": "LLM base URL (OpenAI-compatible)",
+      "env_variable": "OPENAI_BASE_URL",
+      "default": "",
+      "hint": "Optional. Leave empty to disable LLM features. Example: http://host.docker.internal:11434/v1"
+    },
+    {
+      "type": "password",
+      "label": "LLM API key",
+      "env_variable": "OPENAI_API_KEY",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "label": "LLM model name",
+      "env_variable": "MODEL_NAME",
+      "default": "",
+      "hint": "Only used when an LLM base URL is set"
+    },
+    {
+      "type": "text",
+      "label": "SearXNG endpoint URL",
+      "env_variable": "SEARXNG_ENDPOINT",
+      "default": "",
+      "hint": "Optional. SearXNG URL reachable from this app, e.g. http://searxng:8080 (container name). Leave empty to disable search."
+    },
+    {
+      "type": "text",
+      "label": "SearXNG categories",
+      "env_variable": "SEARXNG_CATEGORIES",
+      "default": "general"
+    }
+  ]
+}

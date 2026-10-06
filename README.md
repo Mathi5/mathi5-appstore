@@ -4,6 +4,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
 | App | Version | Description |
 |-----|--------:|-------------|
+| [firecrawl](./apps/firecrawl) | 2.11.0 | Self-hosted Firecrawl web scraping API — scrape/crawl/map (+search via SearXNG), 5 bundled services |
 | [crw-shield](./apps/crw-shield) | 0.4.5 | Firecrawl v2-compatible scraper with multi-layer anti-bot bypass |
 | [neutarr](./apps/neutarr) | 1.11.1 | Missing-media hunter & quality upgrades for the *arr stack (Huntarr successor) |
 | [swaparr-sonarr](./apps/swaparr-sonarr) | 0.12.0 | Stalled-download cleanup for Sonarr (headless, per-instance watcher) |
@@ -16,9 +17,10 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 3. Paste this URL: `https://github.com/Mathi5/mathi5-appstore`
 4. Name it (e.g. `mathi5`) and save.
 5. Click **Update App Stores** to pull the latest app list.
-6. Install `crw-shield` from the app store.
+6. Install any app from the list above (e.g. `crw-shield`, `firecrawl`).
 
-The crw-shield image is `ghcr.io/mathi5/crw-shield:0.2.0` (linux/amd64 only for now).
+crw-shield: `ghcr.io/mathi5/crw-shield` (linux/amd64 only for now).
+firecrawl: official upstream images `ghcr.io/firecrawl/*` (linux/amd64 + arm64).
 
 ## Adding a new app
 
