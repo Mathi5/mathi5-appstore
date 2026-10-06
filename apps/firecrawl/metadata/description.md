@@ -25,7 +25,11 @@ curl -X POST http://<runtipi-host>:<port>/v2/scrape \
   -d '{"url": "https://example.com", "formats": ["markdown"]}'
 ```
 
-Without a valid key the API answers with `401 Unauthorized` on v2 endpoints.
+Without a key the SDKs still require sending *a* Bearer string; note that
+self-hosted Firecrawl (`USE_DB_AUTHENTICATION=false`, this packaging) does
+**not** enforce the key server-side — any request is accepted. API protection
+is a network-level concern: keep the app on the LAN, or expose it behind
+an authenticated reverse proxy.
 A Bull board admin UI is available at `/admin/<BULL_AUTH_KEY>/queues`.
 
 ## Configuration

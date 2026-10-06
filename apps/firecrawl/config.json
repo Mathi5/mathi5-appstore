@@ -23,7 +23,7 @@
   "form_fields": [
     {
       "type": "random",
-      "label": "API key to authenticate requests (Bearer token)",
+      "label": "API key (NOT enforced server-side in self-hosted mode — see description; network protection is up to you)",
       "env_variable": "TEST_API_KEY",
       "random_length": 24
     },
