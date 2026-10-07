@@ -8,8 +8,7 @@ returns the **resolved page content**, not just cookies. Escalation ladder per r
 1. HTTP fetch (plain)
 2. HTTP with TLS client impersonation
 3. cached browser (Camoufox fingerprint; session cache in memory or Redis)
-4. fresh solve in a Camoufox browser (Cloudflare JS, Turnstile, reCAPTCHA, hCaptcha, GeeTest — no paid solver API)
-5. optional residential-proxy escalation (only if configured)
+4. fresh solve in a Camoufox browser (Cloudflare JS, Turnstile, reCAPTCHA, hCaptcha, GeeTest — no paid solver API), optionally escalating through a datacenter (tier 3 proxy field) or residential (tier 4 proxy field) proxy pool
 
 It also serves a native **MCP server** (`/mcp`, opt-in) and an optional challenge-bypassing
 **HTTP/HTTPS forward proxy** (port 8192, opt-in) that auto-escalates challenged traffic — the
@@ -52,7 +51,7 @@ curl -X POST http://<runtipi-host>:<port>/v1 \
 | Content processes / browser | 2 | keeps a solve burst under ~1.5 GB RAM |
 | Tier 3 datacenter proxy | empty | optional HTTP/SOCKS5 upstream proxy (pool: comma-separated) |
 | Tier 4 residential proxy | empty | most self-hosts never need it (a clean residential fixed IP passes IP reputation) |
-| Session cache | memory (`SESSION_CACHE_REDIS`=off) | sessions cleared on restart → fresh solve on demand (cheap, a few seconds); toggle + `REDIS_URL` for cross-restart persistence |
+| Session cache driver (`SESSION_CACHE_DRIVER`) | `memory` | sessions cleared on restart → fresh solve on demand (cheap, a few seconds); set `redis` + `REDIS_URL` (another Runtipi Redis app's `redis://<container>:6379`) for cross-restart persistence |
 | MCP endpoint | off | enable to give MCP clients (Hermes, OpenWebUI…) scraping tools on `/mcp` |
 | Log level | `info` | error / warn / info / debug / silent |
 
