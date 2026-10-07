@@ -11,7 +11,7 @@
   ],
   "short_desc": "Web scraping API turning any site into clean LLM-ready markdown.",
   "description": "Self-hosted Firecrawl: scrape, crawl and search any website and get clean markdown ready for LLM consumption. Includes the Playwright microservice for JS-heavy pages. API compatible with the Firecrawl SDKs (v2).",
-  "tipi_version": 1,
+  "tipi_version": 2,
   "version": "2.11.3",
   "source": "https://github.com/firecrawl/firecrawl",
   "exposable": true,
@@ -61,6 +61,20 @@
     },
     {
       "type": "text",
+      "label": "Antibot proxy (PROXY_SERVER)",
+      "env_variable": "PROXY_SERVER",
+      "default": "",
+      "hint": "Optional. Leave empty to disable. To route fetches through the Trawl app's challenge-solving forward proxy: http://trawl:8192 (container name + INTERNAL port, both mains join tipi_main_network). Requires Trawl's forward proxy toggle ON and the ALLOW_LOCAL_WEBHOOKS toggle below ON (SSRF guard)."
+    },
+    {
+      "type": "boolean",
+      "label": "Release SSRF guard (ALLOW_LOCAL_WEBHOOKS)",
+      "env_variable": "ALLOW_LOCAL_WEBHOOKS",
+      "default": false,
+      "hint": "ON = Firecrawl may fetch private-network hosts (needed when PROXY_SERVER points at a Runtipi app; also required for webhooks on LAN IPs). Keep OFF when no antibot proxy and no local webhooks are used."
+    },
+    {
+      "type": "text",
       "label": "SearXNG categories",
       "env_variable": "SEARXNG_CATEGORIES",
       "default": "general"
@@ -84,5 +98,5 @@
       "hint": "Workers refuse new jobs above this host RAM usage. Raise to 1 if scrapes stay queued on a busy host. Default: 0.8"
     }
   ],
-  "updated_at": 1791291743713
+  "updated_at": 1791377770203
 }

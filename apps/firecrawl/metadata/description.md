@@ -39,6 +39,7 @@ A Bull board admin UI is available at `/admin/<BULL_AUTH_KEY>/queues`.
 | API key (`TEST_API_KEY`) | random 24 chars | Bearer token sent by SDKs (NOT enforced server-side in self-hosted mode — the key column only documents the client convention) |
 | Bull admin key (`BULL_AUTH_KEY`) | random | Secret path segment for `/admin/<key>/queues` |
 | LLM base URL / API key / model | empty | Optional; enables LLM features (extract agent). Point at any OpenAI-compatible endpoint |
+| Antibot proxy (`PROXY_SERVER`) | empty | Optional; routes Firecrawl's own fetches (native + Playwright SSRF-proxy chain) through an HTTP proxy. Point it at the **Trawl** app's forward proxy with `http://trawl:8192` (container name + INTERNAL port): Trawl's MITM proxy detects challenges, solves them (Camoufox) and streams the resolved page back. Requires: Trawl's forward proxy enabled, **both** apps' `ALLOW_LOCAL_WEBHOOKS` toggles ON (SSRF guard otherwise kills private-host fetches), Firecrawl scrapes must be called with `skipTlsVerification` (it is the v2 default when no custom headers and no actions are set) since Trawl re-signs certificates. |
 | SearXNG endpoint | empty | Optional; enables `/v2/search` via SearXNG instead of the DuckDuckGo fallback. For a SearXNG installed as a Runtipi app use **`http://searxng:8080`** — container name + INTERNAL port (both apps' main services join `tipi_main_network`, so the name resolves; port 8127 is the host-published port and does NOT exist inside the container) |
 | SearXNG categories | `general` | Only used when the endpoint is set |
 | Max CPU / Max RAM ratio | `0.8` | Worker backpressure: workers refuse new jobs when host CPU or RAM usage exceeds the ratio. Raise to `1` if scrapes stay queued on a busy host |
@@ -49,6 +50,19 @@ LLM and search features are strictly optional — scraping, crawling and mapping
 > in the api logs while the 8 nuq workers start up — that's normal backpressure
 > (default threshold: 80 % CPU or RAM). If it never clears and scrapes stay
 > queued, raise the Max CPU / Max RAM settings above.
+
+## What's new in 2.11.3 (October 2026 config rev.)
+
+- **New optional field — Antibot proxy (`PROXY_SERVER`)**: point it at the [Trawl](../trawl) app's
+  forward proxy (`http://trawl:8192`) to route Firecrawl's fetches through a challenge-solving
+  engine (Cloudflare JS, Turnstile, reCAPTCHA…). Firecrawl keeps its markdown/crawl pipeline;
+  Trawl hands it the resolved page. Full wiring guide in the Trawl app description.
+- **New optional field — SSRF guard release (`ALLOW_LOCAL_WEBHOOKS`)**: needs to be ON when
+  `PROXY_SERVER` points at a private-network peer (or when delivering webhooks to LAN IPs).
+  Default OFF — keep it that way unless one of the two applies.
+- Self-hosted auth doc corrected upstream: with `USE_DB_AUTHENTICATION=false` no Bearer key is
+  enforced server-side (protection is network-level — keep the app on the LAN or behind an
+  authenticated reverse proxy).
 
 ## Upstream images
 

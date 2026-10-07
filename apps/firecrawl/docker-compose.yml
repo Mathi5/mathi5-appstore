@@ -7,6 +7,10 @@ services:
     environment:
       - PORT=3000
       - MAX_CONCURRENT_PAGES=10
+      # Playwright SSRF-proxy chain: release the private-host guard so the
+      # browser contexts may be routed through an antibot proxy on a private
+      # network (Trawl forward proxy). Upstream parses "TRUE" case-insensitive.
+      - ALLOW_LOCAL_WEBHOOKS=${ALLOW_LOCAL_WEBHOOKS}
     logging:
       driver: json-file
       options:
@@ -54,6 +58,13 @@ services:
       # (checked in apps/api/src/search/index.ts). A blank URL field = search
       # off; no ${...} interpolation needed in this value.
       - SEARXNG_ENDPOINT=${SEARXNG_ENDPOINT}
+      # Optional antibot proxy (e.g. the Trawl app's forward proxy on 8192).
+      # Consumed by safeFetch (undici ProxyAgent) for native fetches.
+      - PROXY_SERVER=${PROXY_SERVER}
+      # SSRF guard release: REQUIRED when PROXY_SERVER points at a private
+      # network address (docker hostname like trawl resolves to RFC1918).
+      # Upstream boolean parsing: /^(1|true|yes)$/i.
+      - ALLOW_LOCAL_WEBHOOKS=${ALLOW_LOCAL_WEBHOOKS}
     extra_hosts:
       - host.docker.internal:host-gateway
     ulimits:
