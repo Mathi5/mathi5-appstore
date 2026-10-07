@@ -1,0 +1,55 @@
+x-runtipi:
+  schema_version: 2
+
+services:
+  trawl:
+    image: ghcr.io/germondai/trawl:1.7.0
+    restart: unless-stopped
+    environment:
+      - PORT=8191
+      - LOG_LEVEL=${TRAWL_LOG_LEVEL}
+      - BROWSER_POOL_SIZE=${BROWSER_POOL_SIZE}
+      # Cap Firefox content processes per Camoufox instance
+      # (dom.ipc.processCount). Default 2 keeps a solve burst under ~1.5 GB.
+      - BROWSER_MAX_CONTENT_PROCESSES=${BROWSER_MAX_CONTENT_PROCESSES}
+      # Tier 3 (datacenter/HTTP proxy) — empty = disabled
+      - PROXY_URL=${TRAWL_PROXY_URL}
+      # Tier 4 (residential) — empty = disabled
+      - RESIDENTIAL_PROXY_URL=${RESIDENTIAL_PROXY_URL}
+      # Session cache: memory (default) or redis when set below. Direct
+      # passthrough — upstream throws on any other value than these two.
+      - SESSION_CACHE_DRIVER=${SESSION_CACHE_DRIVER}
+      # Forward proxy: OFF by default (CA-bearing MITM listener). Turn on
+      # MITM_ENABLED only if you route a scraper client (Firecrawl
+      # PROXY_SERVER, Prowlarr) through it — then import its CA from
+      # GET :8191/proxy-ca.crt (persisted in /data/proxy-ca).
+      - MITM_ENABLED=${MITM_ENABLED}
+      - MITM_PORT=8192
+      - MITM_CA_DIR=/data/proxy-ca
+      - MITM_MAX_TIER=${MITM_MAX_TIER}
+      - MITM_ALWAYS_SCRAPE=false
+      # Optional MCP endpoint (Streamable HTTP) for MCP clients.
+      - MCP_ENABLED=${MCP_ENABLED}
+      # Dashboard; token-protected (random 32 chars generated at install).
+      - METRICS_DASHBOARD_ENABLED=${METRICS_DASHBOARD_ENABLED}
+      - METRICS_DASHBOARD_TOKEN=${METRICS_DASHBOARD_TOKEN}
+      - METRICS_DB_PATH=/data/metrics/trawl.sqlite
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        compress: "true"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "curl -sf http://127.0.0.1:8191/health || exit 1"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    x-runtipi:
+      is_main: true
+      internal_port: 8191

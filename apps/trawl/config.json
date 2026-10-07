@@ -1,0 +1,114 @@
+{
+  "name": "Trawl",
+  "id": "trawl",
+  "available": true,
+  "author": "Mathi5",
+  "port": 8191,
+  "categories": [
+    "network",
+    "utilities",
+    "development"
+  ],
+  "short_desc": "Self-hosted scraping engine: resolves Cloudflare/captcha challenges to hand clean pages to scrapers and firewalls. FlareSolverr-compatible.",
+  "description": "Self-hosted TRAWL: web scraping engine that bypasses JS challenges and captchas (Cloudflare, Turnstile, reCAPTCHA, hCaptcha, GeeTest) and hands resolved pages to API clients or agents. FlareSolverr-compatible /v1 for Prowlarr and the *arr stack, native MCP server, optional challenge-bypassing forward proxy for Firecrawl (PROXY_SERVER), metrics dashboard. Camoufox-based.",
+  "tipi_version": 1,
+  "version": "1.7.0",
+  "source": "https://github.com/germondai/trawl",
+  "exposable": false,
+  "dynamic_config": true,
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "form_fields": [
+    {
+      "type": "boolean",
+      "label": "Enable the metrics dashboard",
+      "env_variable": "METRICS_DASHBOARD_ENABLED",
+      "default": false
+    },
+    {
+      "type": "random",
+      "label": "Dashboard token (32+ chars, protects the dashboard when enabled)",
+      "env_variable": "METRICS_DASHBOARD_TOKEN",
+      "random_length": 32
+    },
+    {
+      "type": "boolean",
+      "label": "Enable the challenge-bypassing forward proxy (port 8192)",
+      "env_variable": "MITM_ENABLED",
+      "default": false,
+      "hint": "OFF by default. Set to true only to route scraper clients (e.g. Firecrawl PROXY_SERVER, Prowlarr indexers) through it. When on, import its CA into the client: GET http://<trawl>:8191/proxy-ca.crt (see description.md)."
+    },
+    {
+      "type": "number",
+      "label": "MITM max escalation tier",
+      "env_variable": "MITM_MAX_TIER",
+      "default": 3,
+      "min": 1,
+      "max": 4,
+      "hint": "Cap for the forward proxy: 1=HTTP only, 2=cached browser, 3=fresh solve, 4=residential (only if configured). Keep at 3 unless you run Tier 4."
+    },
+    {
+      "type": "number",
+      "label": "Browser pool size (warm Camoufox instances)",
+      "env_variable": "BROWSER_POOL_SIZE",
+      "default": 1,
+      "min": 1,
+      "max": 4,
+      "hint": "Warms full Firefox instances — each costs ~500 MB RAM on solve. Keep at 1 unless you solve challenges concurrently."
+    },
+    {
+      "type": "number",
+      "label": "Firefox content processes per browser",
+      "env_variable": "BROWSER_MAX_CONTENT_PROCESSES",
+      "default": 2,
+      "min": 1,
+      "max": 8,
+      "hint": "dom.ipc.processCount cap. 2 keeps a solve burst under ~1.5 GB RAM; raise only on beefy hosts."
+    },
+    {
+      "type": "text",
+      "label": "Tier 3 datacenter/HTTP proxy (optional)",
+      "env_variable": "TRAWL_PROXY_URL",
+      "default": "",
+      "hint": "http://user:pass@host:port or socks5://… Empty = disabled. Comma-separated for a pool."
+    },
+    {
+      "type": "password",
+      "label": "Tier 4 residential proxy (optional)",
+      "env_variable": "RESIDENTIAL_PROXY_URL",
+      "default": "",
+      "hint": "Enables the Tier 4 escalation. Empty = disabled. Most self-hosts never need it: a clean residential fixed IP already passes IP reputation checks."
+    },
+    {
+      "type": "text",
+      "label": "Session cache driver",
+      "env_variable": "SESSION_CACHE_DRIVER",
+      "default": "memory",
+      "hint": "memory (default) or redis. memory = sessions lost on app restart; a fresh solve happens on demand (cheap). redis requires the REDIS_URL below."
+    },
+    {
+      "type": "text",
+      "label": "Redis URL (only if Redis cache enabled)",
+      "env_variable": "REDIS_URL",
+      "default": "",
+      "hint": "e.g. redis://<redis-container>:6379 — another Runtipi app's container name + INTERNAL port. Only used when the Redis toggle above is ON."
+    },
+    {
+      "type": "boolean",
+      "label": "Enable the MCP scraping endpoint (/mcp)",
+      "env_variable": "MCP_ENABLED",
+      "default": false,
+      "hint": "Exposes Streamable-HTTP MCP tools (readable content, HTML, structured extraction, screenshots) for MCP clients (Hermes, OpenWebUI…). LAN only."
+    },
+    {
+      "type": "text",
+      "label": "Log level",
+      "env_variable": "TRAWL_LOG_LEVEL",
+      "default": "info",
+      "hint": "error | warn | info | debug | silent"
+    }
+  ],
+  "updated_at": 1799712000000
+}
