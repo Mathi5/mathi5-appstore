@@ -12,6 +12,9 @@ services:
       # Cap Firefox content processes per Camoufox instance
       # (dom.ipc.processCount). Default 2 keeps a solve burst under ~1.5 GB.
       - BROWSER_MAX_CONTENT_PROCESSES=${BROWSER_MAX_CONTENT_PROCESSES}
+      # Headful sub-pool (Xvfb) — REQUIRED for DataDome Device Check targets
+      # (leboncoin…). Each instance ~380 MB extra RAM. 0 = disabled.
+      - BROWSER_HEADFUL_POOL_SIZE=${BROWSER_HEADFUL_POOL_SIZE}
       # Tier 3 (datacenter/HTTP proxy) — empty = disabled
       - PROXY_URL=${TRAWL_PROXY_URL}
       # Tier 4 (residential) — empty = disabled

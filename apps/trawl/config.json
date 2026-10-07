@@ -11,7 +11,7 @@
   ],
   "short_desc": "Self-hosted scraping engine: resolves Cloudflare/captcha challenges to hand clean pages to scrapers and firewalls. FlareSolverr-compatible.",
   "description": "Self-hosted TRAWL: web scraping engine that bypasses JS challenges and captchas (Cloudflare, Turnstile, reCAPTCHA, hCaptcha, GeeTest) and hands resolved pages to API clients or agents. FlareSolverr-compatible /v1 for Prowlarr and the *arr stack, native MCP server, optional challenge-bypassing forward proxy for Firecrawl (PROXY_SERVER), metrics dashboard. Camoufox-based.",
-  "tipi_version": 1,
+  "tipi_version": 2,
   "version": "1.7.0",
   "source": "https://github.com/germondai/trawl",
   "exposable": false,
@@ -68,6 +68,15 @@
       "hint": "dom.ipc.processCount cap. 2 keeps a solve burst under ~1.5 GB RAM; raise only on beefy hosts."
     },
     {
+      "type": "number",
+      "label": "Headful browser sub-pool (DataDome targets)",
+      "env_variable": "BROWSER_HEADFUL_POOL_SIZE",
+      "default": 0,
+      "min": 0,
+      "max": 2,
+      "hint": "0 = disabled (default). Set 1 to scrape DataDome-protected sites (leboncoin-style Device Check walls): launches a headful Camoufox behind Xvfb, ~380 MB extra RAM. Leave 0 if you have no DataDome target."
+    },
+    {
       "type": "text",
       "label": "Tier 3 datacenter/HTTP proxy (optional)",
       "env_variable": "TRAWL_PROXY_URL",
@@ -110,5 +119,5 @@
       "hint": "error | warn | info | debug | silent"
     }
   ],
-  "updated_at": 1791379354454
+  "updated_at": 1791380276370
 }
