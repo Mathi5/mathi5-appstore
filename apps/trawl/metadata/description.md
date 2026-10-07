@@ -47,6 +47,8 @@ curl -X POST http://<runtipi-host>:<port>/v1 \
 | Metrics dashboard | off | token-protected (random 32 chars auto-generated; shown in the install form) |
 | Forward proxy (`MITM_ENABLED`) | off | turn on only when routing Firecrawl/Prowlarr through it; import the CA (above) |
 | MITM max tier | 3 | escalation cap of the forward proxy (4 = residential, only if configured) |
+| Skip direct probe (`MITM_ALWAYS_SCRAPE`) | off | route ALL proxied requests through the browser solver instead of trying a plain fetch first. Solves walls the Tier 0 detector does not recognize (e.g. x.com's in-house antibot); cost = ordinary pages also take the slow browser path. Leave off for mixed traffic |
+| Escalate 429 (`MITM_ESCALATE_429`) | off | retry plain 429 rate-limit responses through the solver instead of returning them as-is |
 | Browser pool size | 1 | warm Camoufox instances; each ~500 MB RAM on solve — raise only for concurrent solves |
 | Content processes / browser | 2 | keeps a solve burst under ~1.5 GB RAM |
 | Tier 3 datacenter proxy | empty | optional HTTP/SOCKS5 upstream proxy (pool: comma-separated) |

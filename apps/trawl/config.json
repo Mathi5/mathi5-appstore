@@ -11,7 +11,7 @@
   ],
   "short_desc": "Self-hosted scraping engine: resolves Cloudflare/captcha challenges to hand clean pages to scrapers and firewalls. FlareSolverr-compatible.",
   "description": "Self-hosted TRAWL: web scraping engine that bypasses JS challenges and captchas (Cloudflare, Turnstile, reCAPTCHA, hCaptcha, GeeTest) and hands resolved pages to API clients or agents. FlareSolverr-compatible /v1 for Prowlarr and the *arr stack, native MCP server, optional challenge-bypassing forward proxy for Firecrawl (PROXY_SERVER), metrics dashboard. Camoufox-based.",
-  "tipi_version": 2,
+  "tipi_version": 3,
   "version": "1.7.0",
   "source": "https://github.com/germondai/trawl",
   "exposable": false,
@@ -48,6 +48,20 @@
       "min": 1,
       "max": 4,
       "hint": "Cap for the forward proxy: 1=HTTP only, 2=cached browser, 3=fresh solve, 4=residential (only if configured). Keep at 3 unless you run Tier 4."
+    },
+    {
+      "type": "boolean",
+      "label": "Skip direct probe (route ALL proxied requests through the solver)",
+      "env_variable": "MITM_ALWAYS_SCRAPE",
+      "default": false,
+      "hint": "OFF by default. ON = every proxied request goes through the browser-backed scrape pipeline (Camoufox), which solves walls the Tier 0 detector does not recognize (e.g. x.com's in-house antibot). Cost: ordinary pages also take the slow browser path (seconds each, RAM on solve). Leave off unless you mainly scrape hard-walled domains."
+    },
+    {
+      "type": "boolean",
+      "label": "Escalate HTTP 429 responses to the solver",
+      "env_variable": "MITM_ESCALATE_429",
+      "default": false,
+      "hint": "OFF by default. ON = plain 429 (rate-limit) responses from Tier 0 get retried through the solver instead of being returned as-is. Rate limits alone do not mark a host as challenged."
     },
     {
       "type": "number",
@@ -119,5 +133,5 @@
       "hint": "error | warn | info | debug | silent"
     }
   ],
-  "updated_at": 1791380276370
+  "updated_at": 1791382037451
 }

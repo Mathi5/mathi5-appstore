@@ -30,7 +30,12 @@ services:
       - MITM_PORT=8192
       - MITM_CA_DIR=/data/proxy-ca
       - MITM_MAX_TIER=${MITM_MAX_TIER}
-      - MITM_ALWAYS_SCRAPE=false
+      # Skip the proxy's direct Tier 0 probe: route ALL proxied requests into
+      # scrape() (browser pipeline). Solves walls the detector does not know
+      # (x.com) at the cost of a browser round-trip on every ordinary page.
+      - MITM_ALWAYS_SCRAPE=${MITM_ALWAYS_SCRAPE}
+      # Retry plain 429 rate-limit responses through the solver.
+      - MITM_ESCALATE_429=${MITM_ESCALATE_429}
       # Optional MCP endpoint (Streamable HTTP) for MCP clients.
       - MCP_ENABLED=${MCP_ENABLED}
       # Dashboard; token-protected (random 32 chars generated at install).
