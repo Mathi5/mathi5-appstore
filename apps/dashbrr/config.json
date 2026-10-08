@@ -1,0 +1,66 @@
+{
+  "name": "Dashbrr",
+  "id": "dashbrr",
+  "available": true,
+  "author": "autobrr",
+  "port": 8080,
+  "categories": [
+    "media",
+    "network",
+    "utilities"
+  ],
+  "short_desc": "Sleek dashboard to monitor and manage your media stack: Plex, Jellyfin, *arr, Overseerr, autobrr, SABnzbd, Traefik, Uptime Kuma and more.",
+  "description": "Dashbrr is a modern dashboard for monitoring and managing your media server ecosystem: real-time service health, active stream/session monitoring for Plex and Jellyfin, queue visibility for Sonarr/Radarr/Lidarr/Readarr/Whisparr, indexer health for Prowlarr, request management for Overseerr, download client stats (SABnzbd, NZBGet, qBittorrent), IRC health for autobrr, plus Traefik, Uptime Kuma and Tailscale. Cached data with live updates via SSE, draggable cards, PWA support. Built-in authentication (registration closes after the first account is created) or OpenID Connect.",
+  "tipi_version": 1,
+  "version": "0.7.0",
+  "source": "https://github.com/autobrr/dashbrr",
+  "website": "https://github.com/autobrr/dashbrr",
+  "exposable": true,
+  "dynamic_config": true,
+  "supported_architectures": [
+    "amd64",
+    "arm64"
+  ],
+  "form_fields": [
+    {
+      "type": "fqdn",
+      "label": "OIDC issuer URL",
+      "env_variable": "DASHBRR__OIDC_ISSUER",
+      "required": false,
+      "default": "",
+      "hint": "Optional \u2014 enables OpenID Connect login instead of local accounts. Leave empty to use the built-in username/password authentication. Example: https://auth.example.com (Authentik, Authelia, Pocket ID...)"
+    },
+    {
+      "type": "text",
+      "label": "OIDC client ID",
+      "env_variable": "DASHBRR__OIDC_CLIENT_ID",
+      "required": false,
+      "default": ""
+    },
+    {
+      "type": "password",
+      "label": "OIDC client secret",
+      "env_variable": "DASHBRR__OIDC_CLIENT_SECRET",
+      "required": false,
+      "default": ""
+    },
+    {
+      "type": "text",
+      "label": "OIDC redirect URL",
+      "env_variable": "DASHBRR__OIDC_REDIRECT_URL",
+      "required": false,
+      "default": "",
+      "hint": "Only used with OIDC. Must exactly match the callback URL registered in your provider. When exposing the app on https://dash.example.com: https://dash.example.com/api/auth/oidc/callback"
+    },
+    {
+      "type": "text",
+      "label": "Log level",
+      "env_variable": "DASHBRR__LOG_LEVEL",
+      "required": true,
+      "default": "info",
+      "hint": "trace, debug, info, warn, error, fatal or panic"
+    }
+  ],
+  "updated_at": 1791454676880,
+  "created_at": 1791454676880
+}

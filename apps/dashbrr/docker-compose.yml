@@ -1,0 +1,47 @@
+x-runtipi:
+  schema_version: 2
+
+services:
+  dashbrr:
+    image: ghcr.io/autobrr/dashbrr:v0.7.0
+    restart: unless-stopped
+    # Pinned root on purpose: the published image already runs as root, but if
+    # upstream ever ships its non-root Dockerfile (main branch), files in
+    # /data were created root-owned and a non-root container would lose write
+    # access to its own DB. Pinning keeps the data-dir permission contract.
+    user: "0:0"
+    environment:
+      - TZ=${TZ}
+      # Env-only config mode (v0.7.0): with LISTEN_ADDR + DB_TYPE + DB_PATH all
+      # set, upstream skips its config.toml entirely (HasRequiredEnvVars
+      # short-circuit) — nothing is written outside /data.
+      - DASHBRR__LISTEN_ADDR=0.0.0.0:8080
+      - DASHBRR__DB_TYPE=sqlite
+      - DASHBRR__DB_PATH=/data/dashbrr.db
+      # Required form field (default "info"): env name is DASHBRR__LOG_LEVEL
+      # at v0.7.0 (plain LOG_LEVEL is NOT consumed by this release).
+      - DASHBRR__LOG_LEVEL=${DASHBRR__LOG_LEVEL}
+      # Optional OIDC login: upstream only applies each var when non-empty,
+      # and OIDC mode requires issuer + client id + client secret together.
+      - DASHBRR__OIDC_ISSUER=${DASHBRR__OIDC_ISSUER}
+      - DASHBRR__OIDC_CLIENT_ID=${DASHBRR__OIDC_CLIENT_ID}
+      - DASHBRR__OIDC_CLIENT_SECRET=${DASHBRR__OIDC_CLIENT_SECRET}
+      - DASHBRR__OIDC_REDIRECT_URL=${DASHBRR__OIDC_REDIRECT_URL}
+    volumes:
+      # SQLite + future state live here (bind on the parent dir — Pitfall 16).
+      - ${APP_DATA_DIR}/data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+        compress: "true"
+    x-runtipi:
+      is_main: true
+      internal_port: 8080

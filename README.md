@@ -9,6 +9,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 | [neutarr](./apps/neutarr) | 1.11.1 | Missing-media hunter & quality upgrades for the *arr stack (Huntarr successor) |
 | [swaparr-sonarr](./apps/swaparr-sonarr) | 0.12.0 | Stalled-download cleanup for Sonarr (headless, per-instance watcher) |
 | [swaparr-radarr](./apps/swaparr-radarr) | 0.12.0 | Stalled-download cleanup for Radarr (headless, per-instance watcher) |
+| [dashbrr](./apps/dashbrr) | 0.7.0 | Sleek dashboard for monitoring your media stack — Plex/Jellyfin streams, *arr queues, autobrr, SABnzbd, Traefik, Uptime Kuma (SQLite, no Postgres) |
 
 ## Adding this store to Runtipi
 
@@ -20,7 +21,8 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 6. Install any app from the list above (e.g. `firecrawl`, `trawl`).
 
 Images: firecrawl runs official upstream images `ghcr.io/firecrawl/*` (linux/amd64 + arm64);
-trawl runs the upstream image `ghcr.io/germondai/trawl` (linux/amd64 + arm64).
+trawl runs the upstream image `ghcr.io/germondai/trawl` (linux/amd64 + arm64);
+dashbrr runs the upstream image `ghcr.io/autobrr/dashbrr` (linux/amd64 + arm64).
 
 ## Adding a new app
 
