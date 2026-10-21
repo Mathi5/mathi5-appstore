@@ -10,6 +10,8 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 | [swaparr-sonarr](./apps/swaparr-sonarr) | 0.12.0 | Stalled-download cleanup for Sonarr (headless, per-instance watcher) |
 | [swaparr-radarr](./apps/swaparr-radarr) | 0.12.0 | Stalled-download cleanup for Radarr (headless, per-instance watcher) |
 | [dashbrr](./apps/dashbrr) | 0.7.0 | Sleek dashboard for monitoring your media stack — Plex/Jellyfin streams, *arr queues, autobrr, SABnzbd, Traefik, Uptime Kuma (SQLite, no Postgres) |
+| [foxden](./apps/foxden) | 0.4.0 | Self-hosted Firefox Sync server — bookmarks, history, passwords and tabs, end-to-end encrypted. Works with stock Firefox and Zen Browser. |
+| [vdirsyncer](./apps/vdirsyncer) | 0.1.3 | Two-way sync between Google Calendar / Google Contacts and any CalDAV/CardDAV server (Nextcloud, Baïkal). Ships the `google` extra in a purpose-built image. |
 
 ## Adding this store to Runtipi
 
@@ -22,7 +24,11 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 
 Images: firecrawl runs official upstream images `ghcr.io/firecrawl/*` (linux/amd64 + arm64);
 trawl runs the upstream image `ghcr.io/germondai/trawl` (linux/amd64 + arm64);
-dashbrr runs the upstream image `ghcr.io/autobrr/dashbrr` (linux/amd64 + arm64).
+dashbrr runs the upstream image `ghcr.io/autobrr/dashbrr` (linux/amd64 + arm64);
+foxden runs the upstream image `ghcr.io/lcollins-dev/foxden` (linux/amd64 only);
+vdirsyncer runs `ghcr.io/mathi5/vdirsyncer-runtipi` (linux/amd64 + arm64), built from
+`images/vdirsyncer/` in this repo — it carries the `google` extra that no public
+vdirsyncer image ships.
 
 ## Adding a new app
 
