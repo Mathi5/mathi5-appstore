@@ -30,12 +30,19 @@ WORKDIR /home/vdirsyncer
 
 # The config file and the OAuth token file live in /config. Both are
 # bind-mounted from the host so the Google token survives a container rebuild.
+# The image declares /data too, so the status path exists even when the app
+# is run without a volume (the image runs as a non-root user and cannot
+# create a missing mount point itself).
 ENV HOME=/home/vdirsyncer \
     XDG_CONFIG_HOME=/home/vdirsyncer/.config \
     XDG_DATA_HOME=/home/vdirsyncer/.local/share \
     XDG_CACHE_HOME=/home/vdirsyncer/.cache \
     VDIRSYNCER_CONFIG_DIR=/config \
     VDIRSYNCER_STATUS_PATH=/data/status
+
+RUN mkdir -p /config /data/status && chown -R vdirsyncer:vdirsyncer /config /data
+
+VOLUME ["/config", "/data"]
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["sync"]

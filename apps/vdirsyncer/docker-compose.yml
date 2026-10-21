@@ -3,7 +3,7 @@ x-runtipi:
 
 services:
   vdirsyncer:
-    image: ghcr.io/mathi5/vdirsyncer-runtipi:0.1.1
+    image: ghcr.io/mathi5/vdirsyncer-runtipi:0.1.2
     restart: unless-stopped
     environment:
       # Google OAuth client — type "Desktop application" in the Google Cloud console.
