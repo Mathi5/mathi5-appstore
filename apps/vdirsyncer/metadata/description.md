@@ -11,11 +11,20 @@ every change to Google and back — no Google app, no account sharing.
 A headless worker running [vdirsyncer](https://github.com/pimutils/vdirsyncer) 0.21.0, packaged with
 the **`google` extra** so the `google_calendar` and `google_contacts` storages are available.
 
-> **Why a custom image?** The `google` extra (`aiohttp-oauthlib`) is **not** installed by most
-> vdirsyncer images — `zeonin/vdirsyncer` (0.18.0), `davralin/vdirsyncer` (0.19.3) and
-> `bleala/vdirsyncer` without its injection step all fail at runtime with
-> `aiohttp-oauthlib not installed`. Upstream's own documentation for these storages requires
-> `pip install vdirsyncer[google]`.
+> **Why a custom image?** The `google` extra (`aiohttp-oauthlib`) is what the `google_calendar` and
+> `google_contacts` storages import. Most published vdirsyncer images do **not** carry it:
+>
+> | Image | vdirsyncer | `aiohttp_oauthlib` | Multi-arch |
+> |---|---|---|---|
+> | `iocanel/vdirsyncer` | — | image gone (404) | — |
+> | `bfin/vdirsyncer` | — | arm64-only, cannot run on x86 | arm64 |
+> | `johannweging/vdirsyncer` | 0.16.2 | **missing** | amd64 |
+> | `robvred/vdirsyncer` | 0.16.7 | **missing** | amd64 |
+> | `zeonin/vdirsyncer` | 0.18.0 | **missing** (Nix build) | amd64 |
+> | `davralin/vdirsyncer` | 0.19.3 | **missing** | amd64 |
+> | `bleala/vdirsyncer:2.7.0` | 0.21.0 | **present** | amd64 + arm64 |
+>
+> Upstream's own documentation for these storages requires `pip install vdirsyncer[google]`.
 >
 > The image also **generates the vdirsyncer config from this app's form fields**, so the Runtipi
 > install form is the only thing to fill in. The upstream images expect a hand-written config file.
@@ -24,9 +33,9 @@ the **`google` extra** so the `google_calendar` and `google_contacts` storages a
 > `ghcr.io/mathi5/vdirsyncer-runtipi`.
 >
 > **Alternative:** `bleala/vdirsyncer:2.7.0` is a public, pinnable, multi-arch image that also ships
-> the `google` extra. Use it if you prefer to write the vdirsyncer config by hand — it expects the
-> config at `/vdirsyncer/config` and reads `VDIRSYNCER_CONFIG`, `AUTODISCOVER`, `AUTOSYNC` and
-> `CRON_TIME`.
+> the `google` extra — it injects `aiohttp-oauthlib` into its pipx venv. Use it if you prefer to
+> write the vdirsyncer config by hand: it expects the config at `/vdirsyncer/config` and reads
+> `VDIRSYNCER_CONFIG`, `AUTODISCOVER`, `AUTOSYNC` and `CRON_TIME`.
 
 ## How the sync works
 
