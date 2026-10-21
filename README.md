@@ -12,7 +12,7 @@ Personal [Runtipi](https://runtipi.io) app store. Currently ships:
 | [dashbrr](./apps/dashbrr) | 0.7.0 | Sleek dashboard for monitoring your media stack — Plex/Jellyfin streams, *arr queues, autobrr, SABnzbd, Traefik, Uptime Kuma (SQLite, no Postgres) |
 | [foxden](./apps/foxden) | 0.4.0 | Self-hosted Firefox Sync server — bookmarks, history, passwords and tabs, end-to-end encrypted. Works with stock Firefox and Zen Browser. |
 | [vdirsyncer](./apps/vdirsyncer) | 0.2.0 | Two-way sync between Google Calendar / Google Contacts and any CalDAV/CardDAV server (Nextcloud, Baïkal). Ships the `google` extra in a purpose-built image. |
-| [rclone](./apps/rclone) | 1.75.2 | Sync and back up files to Google Drive, Dropbox, OneDrive, S3, WebDAV and 40+ clouds — and expose any remote over WebDAV. Also the backup destination for Firefox/Zen profiles. |
+| [rclone](./apps/rclone) | 1.75.3 | Sync and back up files to Google Drive, Dropbox, OneDrive, S3, WebDAV and 40+ clouds — and expose any remote over WebDAV. Also the backup destination for Firefox/Zen profiles. |
 
 ## Adding this store to Runtipi
 

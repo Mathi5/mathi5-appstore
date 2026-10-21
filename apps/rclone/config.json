@@ -11,7 +11,7 @@
   "short_desc": "Sync and back up files to Google Drive, Dropbox, OneDrive, S3, WebDAV and 40+ other clouds — and expose any remote over WebDAV.",
   "description": "rclone synchronises and backs up files between your machines and 40+ cloud providers: Google Drive, Dropbox, OneDrive, pCloud, Proton Drive, Backblaze B2, Amazon S3 and any S3-compatible storage (MinIO, Cloudflare R2, Wasabi, Scaleway, OVHcloud…), plus WebDAV, FTP, SFTP, SMB and WebDAV-compatible servers such as Nextcloud. It is the missing piece for two things: a personal cloud drive mounted on the server, and encrypted profile backups for Firefox and Zen Browser pushed to a remote. This packaging also exposes a remote over WebDAV with `rclone serve webdav`, so other apps can reach your cloud as a normal WebDAV mount.",
   "tipi_version": 3,
-  "version": "1.75.2",
+  "version": "1.75.3",
   "source": "https://rclone.org",
   "exposable": true,
   "dynamic_config": true,
@@ -67,5 +67,5 @@
       "hint": "Leave empty to expose the whole remote."
     }
   ],
-  "updated_at": 1792624512836
+  "updated_at": 1792624656943
 }

@@ -108,6 +108,29 @@ rclone sync /path/to/.zen gdrive:backups/zen \
 **Close the browser before the backup** — SQLite files (`places.sqlite`, `cookies.sqlite`,
 `logins.json`) are only consistent when the browser is not writing to them.
 
+### Restoring
+
+```sh
+# 1. Pull the profile back
+rclone copy gdrive:backups/zen "$HOME/.zen/restored" --progress
+
+# 2. Point the browser at the restored folder, either by editing profiles.ini
+#    (Firefox) or by starting the browser with the profile path:
+zen --profile "$HOME/.zen/restored"     # Firefox: firefox --profile "$HOME/.mozilla/firefox/restored"
+
+# 3. Copy profiles.ini next to the restored folder so the browser lists it:
+cp "$HOME/.zen/profiles.ini" "$HOME/.zen/profiles.ini.bak"
+```
+
+A `tar` snapshot is an equally good backup, and restores in one step:
+
+```bash
+# backup
+tar czf ~/profil-$(date +%F).tar.gz -C "$HOME/.zen" <profil>-release
+# restore
+tar xzf ~/profil-2026-10-21.tar.gz -C "$HOME/.zen"
+```
+
 ### What to back up
 
 The whole profile directory is the safe answer. The critical files if you want to be selective:
@@ -115,22 +138,52 @@ The whole profile directory is the safe answer. The critical files if you want t
 | Data | Files |
 |---|---|
 | Bookmarks, history, downloads | `places.sqlite` (+ `-wal`/`-shm`), `bookmarkbackups/`, `favicons.sqlite` |
-| **Passwords** | `logins.json` **+ `key4.db`** — one is useless without the other |
+| **Passwords** | `logins.json` + `logins-backup.json` + **`key4.db`** — the key is useless without the JSON, and vice versa |
 | Cookies | `cookies.sqlite` (+ `-wal`), `webappsstore.sqlite` |
-| Extensions | `extensions/`, `extensions.json`, `addons.json`, `storage/default/` |
+| Extensions | `extensions/`, `extensions.json`, `addons.json`, `extension-store/`, `storage/`, `storage-v2/` |
 | Certificates | `cert9.db`, `pkcs11.txt` |
-| Preferences | `prefs.js`, `user.js`, `search.json.mozlz4`, `handlers.json`, `xulstore.json` |
+| Preferences | `prefs.js`, `user.js`, `search.json.mozlz4`, `handlers.json`, `containers.json`, `xulstore.json` |
 | Sessions | `sessionstore-backups/`, `sessionstore.jsonlz4` (Zen: `zen-sessions.jsonlz4`) |
 | UI customisation | `chrome/` (userChrome.css) |
+| Zen specific | `zen-themes.json` (your Mods), `zen-sessions.jsonlz4` |
 
 Regenerable, skip them: `cache2/`, `startupCache/`, `shader-cache/`, `crashes/`, `minidumps/`,
-`thumbnails/`, `lock`, `.parentlock`.
+`thumbnails/`, `storage/temporary/`, `lock`, `.parentlock`.
 
-Profile locations: Firefox `~/.mozilla/firefox/<profile>/`, Zen `~/.zen/<profile>/` (Flatpak:
-`~/.var/app/app.zen_browser.zen/.zen/<profile>/`). Find the active one in `about:profiles`.
+> `key3.db` only exists on pre-2019 profiles. `key4.db` is the current one and is enough.
+
+Profile locations (confirmed against the official Zen FAQ, which tells you to look in `~/.zen/`):
+
+- **Firefox** — `~/.mozilla/firefox/<profile>/` (Snap: `~/snap/firefox/common/.mozilla/firefox/`),
+  plus `profiles.ini` and `installs.ini` at the root.
+- **Zen** — `~/.zen/<profile>/`, the profile folder carrying the `(release)` suffix.
+  Flatpak: `~/.var/app/app.zen_browser.zen/zen/`.
+
+Find the active one in `about:profiles`.
 
 > **Sync is not a backup.** Firefox Sync does not carry cookies, installed extensions, local
 > preferences or open sessions — you still need a file-level backup for those.
+
+## Bookmarks: floccus, for a continuous sync
+
+A file-level backup is a snapshot. To keep **bookmarks** in sync continuously between your
+browsers and a server, use **floccus**:
+
+- Extension page: https://addons.mozilla.org/addon/floccus/
+- Repository: https://github.com/floccusaddon/floccus (MPL-2.0, release **v5.11.1**, last commit
+  2026-10-18)
+
+It works with **Firefox and Zen Browser** — Zen installs the same AMO extensions, and floccus is a
+plain WebExtension. Backends: Nextcloud Bookmarks, Linkwarden, KaraKeep, Google Drive, Dropbox, Git
+and any generic WebDAV server.
+
+```sh
+# floccus against the WebDAV server this app exposes
+# (server URL: https://<your-runtipi-domain>/, user and password from the install form)
+```
+
+floccus only synchronises **bookmarks** (and tabs) — passwords, cookies, history and the rest of
+the profile still need the file backup above.
 
 ## Configuration
 
