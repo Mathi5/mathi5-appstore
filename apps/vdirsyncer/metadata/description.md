@@ -14,8 +14,8 @@ the **`google` extra** so the `google_calendar` and `google_contacts` storages a
 > **Why a custom image?** Every public vdirsyncer image we audited ships **without** the `google`
 > extra, so the Google storages fail at runtime with `aiohttp-oauthlib not installed`. Upstream's own
 > documentation for these storages requires `pip install vdirsyncer[google]`. The image is built
-> from `github.com/Mathi5/vdirsyncer-image` and published to GHCR as
-> `ghcr.io/mathi5/vdirsyncer-image`.
+> from `github.com/Mathi5/vdirsyncer-runtipi` and published to GHCR as
+> `ghcr.io/mathi5/vdirsyncer-runtipi`.
 
 ## How the sync works
 
@@ -140,4 +140,4 @@ changes in the form fields or accept that they are overwritten.
 - vdirsyncer: https://github.com/pimutils/vdirsyncer
 - Documentation: https://www.vdirsyncer.pimutils.org/en/stable/config.html
 - Google tutorial: https://www.vdirsyncer.pimutils.org/en/stable/tutorials/google.html
-- This image: https://github.com/Mathi5/vdirsyncer-image
+- This image: https://github.com/Mathi5/vdirsyncer-runtipi

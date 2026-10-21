@@ -12,7 +12,7 @@
   "description": "vdirsyncer keeps your Google Calendar and Google Contacts in two-way sync with a self-hosted CalDAV/CardDAV server (Nextcloud, Baïkal, Radicale). Point your phone's agenda at the self-hosted server and let vdirsyncer replicate every change to Google and back. Ships the `google` extra, so the google_calendar and google_contacts storages are available out of the box. Headless worker: it syncs on a schedule and keeps its status and OAuth token in the app data directory.",
   "tipi_version": 3,
   "version": "0.1.0",
-  "source": "https://github.com/Mathi5/vdirsyncer-image",
+  "source": "https://github.com/Mathi5/vdirsyncer-runtipi",
   "exposable": false,
   "dynamic_config": true,
   "supported_architectures": [

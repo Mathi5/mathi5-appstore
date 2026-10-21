@@ -38,10 +38,10 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             VERSION="${GITHUB_REF_NAME#v}"
             echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-            echo "tags=ghcr.io/${OWNER}/vdirsyncer-image:${VERSION},ghcr.io/${OWNER}/vdirsyncer-image:latest" >> "$GITHUB_OUTPUT"
+            echo "tags=ghcr.io/${OWNER}/vdirsyncer-runtipi:${VERSION},ghcr.io/${OWNER}/vdirsyncer-runtipi:latest" >> "$GITHUB_OUTPUT"
           else
             echo "version=0.0.0-dev" >> "$GITHUB_OUTPUT"
-            echo "tags=ghcr.io/${OWNER}/vdirsyncer-image:sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+            echo "tags=ghcr.io/${OWNER}/vdirsyncer-runtipi:sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
           fi
         env:
           IMAGE_OWNER: ${{ github.repository_owner }}
@@ -56,7 +56,7 @@ jobs:
           build-args: |
             VDIRSYNCER_VERSION=0.21.0
           labels: |
-            org.opencontainers.image.title=vdirsyncer-image
+            org.opencontainers.image.title=vdirsyncer-runtipi
             org.opencontainers.image.description=vdirsyncer with the google extra (aiohttp-oauthlib)
             org.opencontainers.image.version=${{ steps.meta.outputs.version }}
 
@@ -64,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGE_OWNER: ${{ steps.meta.outputs.owner }}
-          PACKAGE_NAME: vdirsyncer-image
+          PACKAGE_NAME: vdirsyncer-runtipi
           VERSION: ${{ steps.meta.outputs.version }}
         # The GITHUB_TOKEN cannot PATCH the visibility of a user-scoped
         # package (it 404s). The package is created from a PUBLIC repo, so it
