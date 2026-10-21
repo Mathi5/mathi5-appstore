@@ -1,0 +1,32 @@
+x-runtipi:
+  schema_version: 2
+
+services:
+  vdirsyncer:
+    image: ghcr.io/mathi5/vdirsyncer-image:0.1.1
+    restart: unless-stopped
+    environment:
+      # Google OAuth client — type "Desktop application" in the Google Cloud console.
+      - VDIRSYNCER_GOOGLE_CLIENT_ID=${VDIRSYNCER_GOOGLE_CLIENT_ID}
+      - VDIRSYNCER_GOOGLE_CLIENT_SECRET=${VDIRSYNCER_GOOGLE_CLIENT_SECRET}
+      # CalDAV side (Google Calendar <-> your server)
+      - VDIRSYNCER_CALDAV_URL=${VDIRSYNCER_CALDAV_URL:-}
+      - VDIRSYNCER_CALDAV_USERNAME=${VDIRSYNCER_CALDAV_USERNAME:-}
+      - VDIRSYNCER_CALDAV_PASSWORD=${VDIRSYNCER_CALDAV_PASSWORD:-}
+      # CardDAV side (Google Contacts <-> your server)
+      - VDIRSYNCER_CARDDAV_URL=${VDIRSYNCER_CARDDAV_URL:-}
+      - VDIRSYNCER_CARDDAV_USERNAME=${VDIRSYNCER_CARDDAV_USERNAME:-}
+      - VDIRSYNCER_CARDDAV_PASSWORD=${VDIRSYNCER_CARDDAV_PASSWORD:-}
+      - VDIRSYNCER_INTERVAL=${VDIRSYNCER_INTERVAL:-3600}
+      - VDIRSYNCER_CONFIG_DIR=/config
+      - VDIRSYNCER_STATUS_PATH=/data/status
+      - TZ=${TZ}
+    volumes:
+      # The config and the Google OAuth token live here. The token is written
+      # once, at the first authorization, and reused forever after.
+      - ${APP_DATA_DIR}/config:/config
+      - ${APP_DATA_DIR}/data:/data
+    x-runtipi:
+      # Headless worker: no web UI. It joins the shared network so it can reach
+      # a CalDAV/CardDAV server running as another Runtipi app.
+      add_to_main_network: true

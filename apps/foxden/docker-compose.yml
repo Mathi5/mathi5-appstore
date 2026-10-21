@@ -1,0 +1,42 @@
+x-runtipi:
+  schema_version: 2
+
+services:
+  foxden:
+    image: ghcr.io/lcollins-dev/foxden:0.4.0
+    restart: unless-stopped
+    environment:
+      # The address browsers reach. Must match the Runtipi Traefik route for
+      # this app, otherwise Firefox reads a URL it cannot sign in against.
+      - WEB_APP_BASE_URL=${FOXDEN_BASE_URL}
+      # Runtipi puts Traefik in front of the app, so the client IP arrives in
+      # X-Forwarded-For. Foxden trusts private addresses by default; an empty
+      # value keeps that default.
+      - TRUST_PROXY=${FOXDEN_TRUST_PROXY:-loopback,linklocal,uniquelocal}
+      # Database and backups
+      - DATABASE_PATH=/data/foxden.sqlite
+      - BACKUP_PATH=/data/backups
+      - BACKUP_RETENTION=${FOXDEN_BACKUP_RETENTION:-7}
+      - TYPEORM_MIGRATIONS_RUN=true
+      # Email (optional — leave SMTP_HOST empty to disable it)
+      - EMAIL_SMTP_HOST=${FOXDEN_SMTP_HOST}
+      - EMAIL_SMTP_PORT=${FOXDEN_SMTP_PORT:-587}
+      - EMAIL_SMTP_USERNAME=${FOXDEN_SMTP_USERNAME}
+      - EMAIL_SMTP_PASSWORD=${FOXDEN_SMTP_PASSWORD}
+      - EMAIL_SMTP_SECURE=${FOXDEN_SMTP_SECURE:-false}
+      - EMAIL_FROM_ADDRESS=${FOXDEN_EMAIL_FROM:-foxden@localhost}
+      - LOG_STDOUT_LEVEL=info
+      - TZ=${TZ}
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "wget -q -O- http://127.0.0.1:3000/api/v1/availability > /dev/null 2>&1 || exit 1"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    x-runtipi:
+      is_main: true
+      internal_port: 3000

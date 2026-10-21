@@ -1,0 +1,91 @@
+{
+  "name": "Foxden",
+  "id": "foxden",
+  "available": true,
+  "author": "Louis Collins",
+  "port": 3000,
+  "categories": [
+    "utilities",
+    "data"
+  ],
+  "short_desc": "Self-hosted Firefox Sync server — bookmarks, history, passwords and tabs, end-to-end encrypted, for Firefox and Zen Browser.",
+  "description": "Foxden is a self-hosted Firefox Sync server for a household or small group. It replaces every Mozilla service that Sync uses with one Docker container and one SQLite database. Stock Firefox and Zen Browser work without add-ons or custom builds. Your bookmarks, history, passwords and tabs stay on a server you control, and nothing depends on Mozilla's servers. Accounts are invite-only (user and admin roles), the sync payload stays end-to-end encrypted, the web app manages your profile and signed-in devices, and the database is backed up every night.",
+  "tipi_version": 3,
+  "version": "0.4.0",
+  "source": "https://github.com/lcollins-dev/foxden",
+  "exposable": true,
+  "dynamic_config": true,
+  "supported_architectures": [
+    "amd64"
+  ],
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "Public base URL of this instance",
+      "env_variable": "FOXDEN_BASE_URL",
+      "default": "http://localhost:3000",
+      "hint": "The address browsers will reach, WITHOUT a trailing slash. Firefox reads this from the server and refuses to sign in over plain HTTP unless it is a loopback address. On Runtipi use your Traefik domain, e.g. https://foxden.tipi.lan. Firefox for Android and iOS require HTTPS."
+    },
+    {
+      "type": "text",
+      "label": "Trusted proxy (Traefik address) — leave empty to trust private addresses",
+      "env_variable": "FOXDEN_TRUST_PROXY",
+      "default": "",
+      "hint": "Foxden rate-limits per client IP and trusts X-Forwarded-For from private/loopback addresses by default, which covers Runtipi's Traefik. Set this to the Traefik container's address only if the proxy is not on a private network. Format: an IP, a CIDR, a hop count, or the presets 'loopback', 'linklocal', 'uniquelocal'."
+    },
+    {
+      "type": "text",
+      "label": "SMTP host for invite emails (optional)",
+      "env_variable": "FOXDEN_SMTP_HOST",
+      "default": "",
+      "hint": "Leave empty to turn email off. Foxden then shows the invite link in the web app instead of mailing it. Example: smtp.example.com."
+    },
+    {
+      "type": "number",
+      "label": "SMTP port",
+      "env_variable": "FOXDEN_SMTP_PORT",
+      "default": 587,
+      "min": 1,
+      "max": 65535,
+      "hint": "587 for STARTTLS, 465 for implicit TLS (also set the STARTTLS toggle off)."
+    },
+    {
+      "type": "text",
+      "label": "SMTP username (optional)",
+      "env_variable": "FOXDEN_SMTP_USERNAME",
+      "default": "",
+      "hint": "Leave empty for a relay that accepts mail without signing in."
+    },
+    {
+      "type": "password",
+      "label": "SMTP password (optional)",
+      "env_variable": "FOXDEN_SMTP_PASSWORD",
+      "default": "",
+      "hint": "Only used when the SMTP host is set."
+    },
+    {
+      "type": "text",
+      "label": "Sender address",
+      "env_variable": "FOXDEN_EMAIL_FROM",
+      "default": "foxden@localhost",
+      "hint": "The From address of the invite and password-reset emails."
+    },
+    {
+      "type": "boolean",
+      "label": "Use implicit TLS on the SMTP connection (port 465)",
+      "env_variable": "FOXDEN_SMTP_SECURE",
+      "default": false,
+      "hint": "Off for port 587 (STARTTLS), on for port 465."
+    },
+    {
+      "type": "number",
+      "label": "Number of nightly database backups to keep",
+      "env_variable": "FOXDEN_BACKUP_RETENTION",
+      "default": 7,
+      "min": 1,
+      "max": 365,
+      "hint": "Foxden backs up its SQLite database every night into /data/backups and keeps this many copies. The backups hold password hashes and keys — copy them off the server."
+    }
+  ],
+  "updated_at": 1792621971858
+}
