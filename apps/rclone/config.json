@@ -1,0 +1,71 @@
+{
+  "name": "rclone",
+  "id": "rclone",
+  "available": true,
+  "author": "rclone.org",
+  "port": 5572,
+  "categories": [
+    "utilities",
+    "data"
+  ],
+  "short_desc": "Sync and back up files to Google Drive, Dropbox, OneDrive, S3, WebDAV and 40+ other clouds — and expose any remote over WebDAV.",
+  "description": "rclone synchronises and backs up files between your machines and 40+ cloud providers: Google Drive, Dropbox, OneDrive, pCloud, Proton Drive, Backblaze B2, Amazon S3 and any S3-compatible storage (MinIO, Cloudflare R2, Wasabi, Scaleway, OVHcloud…), plus WebDAV, FTP, SFTP, SMB and WebDAV-compatible servers such as Nextcloud. It is the missing piece for two things: a personal cloud drive mounted on the server, and encrypted profile backups for Firefox and Zen Browser pushed to a remote. This packaging also exposes a remote over WebDAV with `rclone serve webdav`, so other apps can reach your cloud as a normal WebDAV mount.",
+  "tipi_version": 3,
+  "version": "1.75.2",
+  "source": "https://rclone.org",
+  "exposable": true,
+  "dynamic_config": true,
+  "supported_architectures": [
+    "amd64",
+    "arm64",
+    "arm",
+    "386"
+  ],
+  "form_fields": [
+    {
+      "type": "text",
+      "label": "rclone config file path (inside the container)",
+      "env_variable": "RCLONE_CONFIG_PATH",
+      "default": "/config/rclone.conf",
+      "hint": "The rclone configuration file, mounted from the app data directory. Create it with 'rclone config' in the app's container console. Keep it on a volume — it holds the OAuth tokens."
+    },
+    {
+      "type": "text",
+      "label": "Remote to serve over WebDAV (optional)",
+      "env_variable": "RCLONE_SERVE_REMOTE",
+      "default": "",
+      "hint": "Name of an rclone remote, e.g. 'gdrive'. When set, the app exposes it over WebDAV on the port below, so other apps (or a phone) can mount https://<your-domain>/ as a WebDAV drive. Leave empty to disable."
+    },
+    {
+      "type": "number",
+      "label": "WebDAV server port",
+      "env_variable": "RCLONE_SERVE_PORT",
+      "default": 5572,
+      "min": 1,
+      "max": 65535,
+      "hint": "Internal port for 'rclone serve webdav'. Runtipi maps it to the app's host port."
+    },
+    {
+      "type": "text",
+      "label": "WebDAV user (optional)",
+      "env_variable": "RCLONE_SERVE_USER",
+      "default": "",
+      "hint": "Leave empty for an open server — only do that on a trusted LAN."
+    },
+    {
+      "type": "password",
+      "label": "WebDAV password (optional)",
+      "env_variable": "RCLONE_SERVE_PASS",
+      "default": "",
+      "hint": "Password for the WebDAV user above."
+    },
+    {
+      "type": "text",
+      "label": "Directory inside the remote to expose over WebDAV",
+      "env_variable": "RCLONE_SERVE_PATH",
+      "default": "",
+      "hint": "Leave empty to expose the whole remote."
+    }
+  ],
+  "updated_at": 1792624512836
+}
