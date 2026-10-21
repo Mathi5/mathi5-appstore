@@ -11,11 +11,22 @@ every change to Google and back — no Google app, no account sharing.
 A headless worker running [vdirsyncer](https://github.com/pimutils/vdirsyncer) 0.21.0, packaged with
 the **`google` extra** so the `google_calendar` and `google_contacts` storages are available.
 
-> **Why a custom image?** Every public vdirsyncer image we audited ships **without** the `google`
-> extra, so the Google storages fail at runtime with `aiohttp-oauthlib not installed`. Upstream's own
-> documentation for these storages requires `pip install vdirsyncer[google]`. The image is built
-> from `github.com/Mathi5/vdirsyncer-runtipi` and published to GHCR as
+> **Why a custom image?** The `google` extra (`aiohttp-oauthlib`) is **not** installed by most
+> vdirsyncer images — `zeonin/vdirsyncer` (0.18.0), `davralin/vdirsyncer` (0.19.3) and
+> `bleala/vdirsyncer` without its injection step all fail at runtime with
+> `aiohttp-oauthlib not installed`. Upstream's own documentation for these storages requires
+> `pip install vdirsyncer[google]`.
+>
+> The image also **generates the vdirsyncer config from this app's form fields**, so the Runtipi
+> install form is the only thing to fill in. The upstream images expect a hand-written config file.
+>
+> Built from `github.com/Mathi5/mathi5-appstore` (`images/vdirsyncer/`), published to GHCR as
 > `ghcr.io/mathi5/vdirsyncer-runtipi`.
+>
+> **Alternative:** `bleala/vdirsyncer:2.7.0` is a public, pinnable, multi-arch image that also ships
+> the `google` extra. Use it if you prefer to write the vdirsyncer config by hand — it expects the
+> config at `/vdirsyncer/config` and reads `VDIRSYNCER_CONFIG`, `AUTODISCOVER`, `AUTOSYNC` and
+> `CRON_TIME`.
 
 ## How the sync works
 
@@ -140,4 +151,5 @@ changes in the form fields or accept that they are overwritten.
 - vdirsyncer: https://github.com/pimutils/vdirsyncer
 - Documentation: https://www.vdirsyncer.pimutils.org/en/stable/config.html
 - Google tutorial: https://www.vdirsyncer.pimutils.org/en/stable/tutorials/google.html
-- This image: https://github.com/Mathi5/vdirsyncer-runtipi
+- This image: https://github.com/Mathi5/mathi5-appstore/tree/main/images/vdirsyncer
+- Alternative image: https://github.com/Bleala/Vdirsyncer-DOCKERIZED

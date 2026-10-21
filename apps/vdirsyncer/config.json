@@ -8,11 +8,11 @@
     "utilities",
     "data"
   ],
-  "short_desc": "Two-way sync between Google Calendar / Google Contacts and any CalDAV/CardDAV server (Nextcloud, Baïkal, Radicale).",
+  "short_desc": "Two-way sync between Google Calendar / Google Contacts and any CalDAV/CardDAV server (Nextcloud, Baïkal).",
   "description": "vdirsyncer keeps your Google Calendar and Google Contacts in two-way sync with a self-hosted CalDAV/CardDAV server (Nextcloud, Baïkal, Radicale). Point your phone's agenda at the self-hosted server and let vdirsyncer replicate every change to Google and back. Ships the `google` extra, so the google_calendar and google_contacts storages are available out of the box. Headless worker: it syncs on a schedule and keeps its status and OAuth token in the app data directory.",
   "tipi_version": 3,
-  "version": "0.1.3",
-  "source": "https://github.com/Mathi5/vdirsyncer-runtipi",
+  "version": "0.2.0",
+  "source": "https://github.com/Bleala/Vdirsyncer-DOCKERIZED",
   "exposable": false,
   "dynamic_config": true,
   "supported_architectures": [
@@ -86,5 +86,5 @@
       "hint": "How often the container syncs. 3600 = hourly. Google rate-limits CalDAV reads, so avoid intervals under 5 minutes."
     }
   ],
-  "updated_at": 1792623958345
+  "updated_at": 1792624186933
 }

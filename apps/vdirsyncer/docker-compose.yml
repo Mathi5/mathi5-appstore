@@ -3,6 +3,14 @@ x-runtipi:
 
 services:
   vdirsyncer:
+    # Public, pinnable and multi-arch (linux/amd64 + linux/arm64). It ships
+    # vdirsyncer 0.21.0 WITH the `google` extra — the extra every other public
+    # vdirsyncer image omits, which is what breaks the google_calendar and
+    # google_contacts storages.
+    #
+    # The image also GENERATES the vdirsyncer config from the form fields, so
+    # the Runtipi install form is the only thing to fill in. The upstream
+    # images expect a hand-written config file.
     image: ghcr.io/mathi5/vdirsyncer-runtipi:0.1.3
     restart: unless-stopped
     environment:
